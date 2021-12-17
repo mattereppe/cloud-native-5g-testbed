@@ -32,4 +32,4 @@ RUN apt-get update; apt-get install -y wget gpg && \
 # This part installs testing tools and could be safely removed for "production" releases
 RUN apt-get -y install iproute2 tcpdump iputils-ping dnsutils vim 
 
-CMD /bin/bash
+WORKDIR /
