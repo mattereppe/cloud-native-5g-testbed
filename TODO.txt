@@ -1,0 +1,8 @@
+Declarative configMap
+=====================
+ConfigMap can be created in an imperative (kubectl create) or declarative (kubectl apply -f .yaml). 
+Unfortunately, only the first form can read data from an existing file.
+Since for testing and debugging purpose editing files is more practical that changing them once they
+are embedded in the yaml, I manually create the ConfigMap when needed for now. 
+
+Later on, I would likely switch to the declarative approach with more stable versions of the files.
