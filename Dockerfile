@@ -17,7 +17,7 @@ ARG OPEN5G_VERSION=latest
 ARG MONGODB_VERSION=5.0
 
 # Update and install preliminary dependencies
-RUN apt-get update; apt-get install -y wget gpg nfs-common && \
+RUN apt-get update; apt-get install -y wget gpg && \
 # Add the necessary repositories and keys
 		wget -qO - https://www.mongodb.org/static/pgp/server-$MONGODB_VERSION.asc | gpg --dearmor > $KEY_REP/mongodb-org-archive-keyring.gpg && \
 		wget -qO - https://download.opensuse.org/repositories/home:/acetcom:/open5gs:/$OPEN5G_VERSION/$OPEN5G_DEBIAN/Release.key |  \ 
