@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: upf
+  namespace: open5gs
+  labels:
+    epc-role: upf
+spec:
+  ports:
+  - name: sbi      # Service Based Interface (web interface "bus" in the control plane)
+    port: 7777
+    protocol: TCP    
+  selector:
+    epc-role: upf    
+---
+#apiVersion: apps/v1 
+#kind: StatefulSet
+#metadata:
+#  name: amf
+#  namespace: open5gs
+#  labels:
+#    segment: core
+#    plane: control
+#spec:
+#  replicas: 1
+#  serviceName: "amf-svc"
+#  selector:
+#    matchLabels:
+#      epc-role: amf
+#  template:
+#    metadata:
+#      labels:
+#        epc-role: amf
+#    spec:
+#      containers:
+#        - name: amf
+#          image: ghcr.io/mattereppe/open5gs:main
+#          imagePullPolicy: Always
+#          command: ["open5gs-amfd", "-c", "/etc/open5gs/amf.yaml"]
+#          volumeMounts:
+#          - name: amf-configmap-volume
+#            mountPath: /etc/open5gs
+##            subPath: "amf.yaml"            # Not really necessary; just consider that all existing files are "masked" by a single mme.yaml file
+#      imagePullSecrets: 						  # This to be removed once the image is public
+#        - name: k8s-secret-open5gs
+#      volumes:
+#        - name: amf-configmap-volume
+#          configMap:
+#            name: open5gs-amf-config
+#

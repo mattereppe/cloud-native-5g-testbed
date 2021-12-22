@@ -237,7 +237,7 @@ nrf:
       - addr:
 #          - 127.0.0.10 # Replace later, when all services are defined
           - nrf.open5gs.svc.cluster.local
-          - ::1
+#          - ::1 ## IPv6 still not configured in my infrastructure
         port: 7777
 
 #

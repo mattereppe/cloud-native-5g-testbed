@@ -329,25 +329,25 @@ logger:
 
 smf:
     sbi:
-      - addr: 127.0.0.4
+      - addr: 127.0.0.1
         port: 7777
     pfcp:
-      - addr: 127.0.0.4
-      - addr: ::1
+      - addr: 127.0.0.1
+#      - addr: ::1 ## My infrastructure does not support IPv6
     gtpc:
-      - addr: 127.0.0.4
-      - addr: ::1
+      - addr: 127.0.0.1
+# - addr: ::1 ## My infrastructure does not support IPv6
     gtpu:
-      - addr: 127.0.0.4
-      - addr: ::1
+      - addr: 127.0.0.1
+#      - addr: ::1 ## My infrastructure does not support IPv6
     subnet:
       - addr: 10.45.0.1/16
-      - addr: 2001:230:cafe::1/48
+#- addr: 2001:230:cafe::1/48
     dns:
       - 8.8.8.8
       - 8.8.4.4
-      - 2001:4860:4860::8888
-      - 2001:4860:4860::8844
+#      - 2001:4860:4860::8888
+#      - 2001:4860:4860::8844
     mtu: 1400
     freeDiameter: /etc/freeDiameter/smf.conf
 
@@ -380,8 +380,8 @@ smf:
 nrf:
     sbi:
       - addr:
-          - 127.0.0.10
-          - ::1
+          - nrf.open5gs.svc.cluster.local
+#          - ::1		## My infrastructure does not support IPv6
         port: 7777
 
 #
@@ -438,7 +438,9 @@ nrf:
 #
 upf:
     pfcp:
-      - addr: 127.0.0.7
+#- addr: 127.0.0.7
+      - name: upf.open5gs.svc.cluster.local
+        apn: internet
 
 #
 # parameter:
