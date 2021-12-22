@@ -3,7 +3,7 @@
 # Binaries are taken from official software repositories.
 #
 
-FROM debian:bullseye as mongodb
+FROM debian:bullseye 
 
 # Disable interactive mode for apt
 ARG DEBIAN_FRONTEND=noninteractive
@@ -19,20 +19,12 @@ ARG MONGODB_VERSION=5.0
 # Update and install preliminary dependencies
 RUN apt-get update; apt-get install -y wget gpg && \
 # Add the necessary repositories and keys
-		wget -qO - https://www.mongodb.org/static/pgp/server-$MONGODB_VERSION.asc | gpg --dearmor > $KEY_REP/mongodb-org-archive-keyring.gpg && \
 		wget -qO - https://download.opensuse.org/repositories/home:/acetcom:/open5gs:/$OPEN5G_VERSION/$OPEN5G_DEBIAN/Release.key |  \ 
 			gpg --dearmor > $KEY_REP/open5gs-archive-keyring.gpg && \
 	echo "deb [signed-by=$KEY_REP/open5gs-archive-keyring.gpg] http://download.opensuse.org/repositories/home:/acetcom:/open5gs:/$OPEN5G_VERSION/$OPEN5G_DEBIAN/ ./" | \ 
 		tee /etc/apt/sources.list.d/open5gs.list && \
-	echo "deb [signed-by=$KEY_REP/mongodb-org-archive-keyring.gpg] http://repo.mongodb.org/apt/debian buster/mongodb-org/$MONGODB_VERSION main" | \
-		tee /etc/apt/sources.list.d/mongodb-org.list && \
 # Install Open5Gs and its dependencies
-		apt-get update && apt-get -y install mongodb-org open5gs 
-
-FROM debian:bullseye 
-
-COPY --from=mongodb /usr/bin/open5gs* /usr/bin/
-RUN mkdir /etc/open5gs
+		apt-get update && apt-get -y install  open5gs-ausf open5gs-nrf open5gs-nssf  open5gs-pcf open5gs-smf open5gs-udm open5gs-upf  open5gs-udr open5gs-amf
 
 
 # This part installs testing tools and could be safely removed for "production" releases

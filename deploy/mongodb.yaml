@@ -39,6 +39,7 @@ metadata:
     segment: core
     plane: control
 spec:
+  terminationGracePeriodSeconds: 10
   replicas: 1
   serviceName: "mongodb-svc"
   selector:
@@ -57,7 +58,12 @@ spec:
         - name: mongodb
           image: ghcr.io/mattereppe/open5gs:main
           imagePullPolicy: Always
-          command: ["sh","-c","sleep 600"]
+          command: 
+            - mongod
+            - "--replSet"
+            - rs0
+            - "--smallfiles"
+            - "--noprealloc"
           volumeMounts:
           - name: pv-mongodb
             mountPath: /srv
