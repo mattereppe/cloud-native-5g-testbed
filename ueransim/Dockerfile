@@ -21,23 +21,23 @@ RUN	version=3.20.1 && \
 RUN	cd /usr/src && \
 	git clone https://github.com/aligungr/UERANSIM && \
 	cd UERANSIM && \
-	make &&  \
+	make 
 #	mv build/nr-* /usr/local/bin/ && \
 #	mv build/libdevbnd.so /usr/local/lib/ && \
 #	mkdir /etc/ueransim && \
 # Purge unnecessary files
-	cd /usr/src/cmake-$version && \
-	make uninstall && \
-	apt-get -y purge make g++ wget git libssl-dev && \ 
-	apt-get -y autoremove && \
-	rm -rf /usr/src/cmake* && \
-	rm -rf /usr/src/UERANSIM
+#	cd /usr/src/cmake-$version && \
+#	make uninstall && \
+#	apt-get -y purge make g++ wget git libssl-dev && \ 
+#	apt-get -y autoremove && \
+#	rm -rf /usr/src/cmake* && \
+#	rm -rf /usr/src/UERANSIM
 
 FROM debian:bullseye
 
 # Copy relevant files
-COPY --from=sources /usr/src/UERANSIM/build/nr-* /usr/local/bin
-COPY --from=sources /usr/src/UERANSIM/libdevbnd.so /usr/local/lib
+COPY --from=sources /usr/src/UERANSIM/build/nr-* /usr/local/bin/
+COPY --from=sources /usr/src/UERANSIM/build/libdevbnd.so /usr/local/lib/
 
 RUN mkdir /etc/ueransim
 RUN apt-get update && apt-get -y upgrade && \
