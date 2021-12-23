@@ -329,16 +329,16 @@ logger:
 
 smf:
     sbi:
-      - addr: 127.0.0.1
+      - addr: 0.0.0.0
         port: 7777
     pfcp:
-      - addr: 127.0.0.1
+      - addr: 0.0.0.0
 #      - addr: ::1 ## My infrastructure does not support IPv6
     gtpc:
-      - addr: 127.0.0.1
+      - addr: 0.0.0.0
 # - addr: ::1 ## My infrastructure does not support IPv6
     gtpu:
-      - addr: 127.0.0.1
+      - addr: 0.0.0.0
 #      - addr: ::1 ## My infrastructure does not support IPv6
     subnet:
       - addr: 10.45.0.1/16

@@ -1,49 +1,49 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: nrf
+  name: ausf
   namespace: open5gs
   labels:
-    epc-role: nrf
+    epc-role: ausf
 spec:
   ports:
   - name: sbi      # Service Based Interface (web interface "bus" in the control plane)
     port: 7777
     protocol: TCP    
   selector:
-    epc-role: nrf    
+    epc-role: ausf    
 ---
 apiVersion: apps/v1 
 kind: StatefulSet
 metadata:
-  name: nrf
+  name: ausf
   namespace: open5gs
   labels:
     segment: core
     plane: control
 spec:
   replicas: 1
-  serviceName: "nrf-svc"
+  serviceName: "ausf-svc"
   selector:
     matchLabels:
-      epc-role: nrf
+      epc-role: ausf
   template:
     metadata:
       labels:
-        epc-role: nrf
+        epc-role: ausf
     spec:
       containers:
-        - name: nrf
+        - name: ausf
           image: ghcr.io/mattereppe/open5gs:main
           imagePullPolicy: Always
-          command: ["open5gs-nrfd", "-c", "/etc/open5gs/nrf.yaml"]
+          command: ["open5gs-ausfd", "-c", "/etc/open5gs/ausf.yaml"]
           volumeMounts:
-          - name: nrf-configmap-volume
+          - name: ausf-configmap-volume
             mountPath: /etc/open5gs
       imagePullSecrets: 						  # This to be removed once the image is public
         - name: k8s-secret-open5gs
       volumes:
-        - name: nrf-configmap-volume
+        - name: ausf-configmap-volume
           configMap:
-            name: open5gs-nrf-config
+            name: open5gs-ausf-config
 

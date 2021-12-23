@@ -1,4 +1,4 @@
-db_uri: mongodb://localhost/open5gs
+db_uri: mongodb://mongodb.open5gs.svc.cluster.local/open5gs
 
 #
 # logger:
@@ -77,7 +77,7 @@ logger:
 #
 udr:
     sbi:
-      - addr: 127.0.0.20
+      - addr: 0.0.0.0
         port: 7777
 
 #
@@ -109,8 +109,8 @@ udr:
 nrf:
     sbi:
       - addr:
-          - 127.0.0.10
-          - ::1
+          - nrf.open5gs.svc.cluster.local
+#          - ::1
         port: 7777
 
 #

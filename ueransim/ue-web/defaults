@@ -1,0 +1,20 @@
+# Default values to run the gNodeB. Partially taken from the source code.
+# All variables must be prefixed with a "d", to avoid overlapping runtime
+# values assigned through environment variables.
+dMCC="001"
+dMNC="01"
+
+dUEIMSI="imsi-001010000000001"
+dUEKEY="465B5CE8B199B49FAA5F0A2EE238A6BC"
+dUEOP="E8ED289DEBA952E4283B54E88E6183CA"
+dUEAMF="8000"
+dUEIMEI="356938035643803"
+dUEIMEISV="4370816125816151"
+
+dGNB_IP="127.0.0.1"
+
+dSST="1"
+dSD="1"
+
+# Default values for running the Web management server.
+dWEB_MGMT_PORT="5001"

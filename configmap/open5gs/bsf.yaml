@@ -77,7 +77,7 @@ logger:
 #
 bsf:
     sbi:
-      - addr: 127.0.0.15
+      - addr: 0.0.0.0
         port: 7777
 
 #
@@ -109,8 +109,8 @@ bsf:
 nrf:
     sbi:
       - addr:
-          - 127.0.0.10
-          - ::1
+          - nrf.open5gs.svc.cluster.local
+#- ::1
         port: 7777
 
 #

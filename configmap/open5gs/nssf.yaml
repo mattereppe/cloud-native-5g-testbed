@@ -112,7 +112,7 @@ logger:
 #          sd: 009000
 nssf:
     sbi:
-      - addr: 127.0.0.14
+      - addr: 0.0.0.0
         port: 7777
     nsi:
       - addr: ::1
@@ -149,8 +149,8 @@ nssf:
 nrf:
     sbi:
       - addr:
-          - 127.0.0.10
-          - ::1
+          - nrf.open5gs.svc.cluster.local
+#- ::1			## My infrastructure does not support IPv6
         port: 7777
 
 #

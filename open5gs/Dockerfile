@@ -3,7 +3,7 @@
 # Binaries are taken from official software repositories.
 #
 
-FROM debian:bullseye as mongodb
+FROM debian:bullseye
 
 # Disable interactive mode for apt
 ARG DEBIAN_FRONTEND=noninteractive
@@ -29,13 +29,7 @@ RUN apt-get update; apt-get install -y wget gpg && \
 # Install Open5Gs and its dependencies
 		apt-get update && apt-get -y install mongodb-org open5gs 
 
-FROM debian:bullseye 
-
-COPY --from=mongodb /usr/bin/open5gs* /usr/bin/
-RUN mkdir /etc/open5gs
-
-
 # This part installs testing tools and could be safely removed for "production" releases
-RUN apt-get update && apt-get -y install iproute2 tcpdump iputils-ping dnsutils vim 
+RUN apt-get -y install iproute2 tcpdump iputils-ping dnsutils vim procps net-tools
 
 WORKDIR /

@@ -75,7 +75,7 @@ logger:
 #
 udm:
     sbi:
-      - addr: 127.0.0.12
+      - addr: 0.0.0.0
         port: 7777
 
 #
@@ -107,8 +107,7 @@ udm:
 nrf:
     sbi:
       - addr:
-          - 127.0.0.10
-          - ::1
+          - nrf.open5gs.svc.cluster.local
         port: 7777
 
 #
