@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: open5gs-gnb-config
+  namespace: open5gs
+  labels:
+    epc-mode: gnb
+data:
+  gnb.yaml: |
+    mcc: 001
+    mnc: 01
+    
+    nci: 0x000000010
+    idLength: 32
+    tac: 1
+    
+    linkIp: POD_IP
+    ngapIp: POD_IP
+    gtpIp: POD_IP
+    
+    amfConfigs:
+      - address: amf.open5gs.svc.k8s.tnt-lab.local
+        port: 38412
+    
+    slices:
+      - sst: 1
+        sd: 1
+    
+    ignoreStreamIds: true
