@@ -41,6 +41,7 @@ COPY --from=sources /usr/src/UERANSIM/build/libdevbnd.so /usr/local/lib/
 
 RUN mkdir /etc/ueransim
 RUN apt-get update && apt-get -y upgrade && \
+	apt-get -y install libsctp1 && \
 	apt-get -y install iproute2 tcpdump procps iputils-ping dnsutils vim net-tools
 
 WORKDIR /usr/local/bin/

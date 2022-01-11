@@ -14,9 +14,9 @@ data:
     idLength: 32
     tac: 1
     
-    linkIp: POD_IP
-    ngapIp: POD_IP
-    gtpIp: POD_IP
+    linkIp: $GNB_POD_IP
+    ngapIp: $GNB_POD_IP
+    gtpIp: $GNB_POD_IP
     
     amfConfigs:
       - address: amf.open5gs.svc.k8s.tnt-lab.local

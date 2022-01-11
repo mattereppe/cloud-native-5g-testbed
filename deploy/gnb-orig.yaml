@@ -31,24 +31,6 @@ spec:
       labels:
         ran-role: gnodeb
     spec:
-      initContainers:
-        - name: replace-env-variables
-          image: bhgedigital/envsubst
-          command: ["/bin/sh","-c","cat /tmp/gnb.yaml | envsubst > /etc/ueransim/gnb.yaml"]
-#     command: ["/bin/sh","-c","sleep 3600"]
-          volumeMounts:
-          - name: gnb-configmap-volume
-            mountPath: /tmp/
-# Alternatively: mount a specific file:
-#            mountPath: /gnb.yaml
-#            subPath: gnb.yaml
-          - name: gnb-data-volume
-            mountPath: /etc/ueransim
-          env:
-            - name: GNB_POD_IP
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
       containers:
         - name: gnb
           image: ghcr.io/mattereppe/ueransim:main
@@ -56,14 +38,18 @@ spec:
 #command: ["nr-gnb", "-c", "/etc/ueransim/open5gs-gnb.yaml"]
           command: ["/bin/bash", "-c", "sleep 3600"]
           volumeMounts:
-          - name: gnb-data-volume
+          - name: gnb-configmap-volume
             mountPath: /etc/ueransim
+#            subPath: "amf.yaml"            # Not really necessary; just consider that all existing files are "masked" by a single mme.yaml file
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
       imagePullSecrets: 						  # This to be removed once the image is public
         - name: k8s-secret-open5gs
       volumes:
         - name: gnb-configmap-volume
           configMap:
             name: open5gs-gnb-config
-        - name: gnb-data-volume
-          emptyDir: {}
 
