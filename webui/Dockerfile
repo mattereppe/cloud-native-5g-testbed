@@ -15,7 +15,7 @@ ARG NODEJS_VERSION="17"
 # Update and install preliminary dependencies
 RUN apt-get update; apt-get install -y wget curl git && \
 # Install Nodejs
-   curl -fsSL https://deb.nodesource.com/setup_${NODEJS_VERSION}.x | bash - && \
+   curl -fsSL https://deb.nodesource.com/setup_${NODEJS_VERSION}.x | bash - && \ 
 	apt-get install -y nodejs && \
 # Install Open5Gs WebUI
 	cd /usr/src/ && \
@@ -30,7 +30,7 @@ RUN apt-get update; apt-get install -y wget curl git && \
 	npm ci --no-optional && npm run build && \
 	if [ ! -d /usr/lib/node_modules ]; then mkdir /usr/lib/node_modules; fi && \
 	if [ -d /usr/lib/node_modules/open5gs ]; then rm -rf /usr/lib/node_modules/open5gs; fi && \
-	mv /open5gs-$OPEN5GS_VERSION/webui /usr/lib/node_modules/open5gs && \
+	mv /usr/src/open5gs-$OPEN5GS_VERSION/webui /usr/lib/node_modules/open5gs && \
 	rm -rf /usr/src/open5gs-$OPEN5GS_VERSION
 
 # This part installs testing tools and could be safely removed for "production" releases
