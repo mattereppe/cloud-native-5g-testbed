@@ -53,8 +53,8 @@ spec:
         - name: gnb
           image: ghcr.io/mattereppe/ueransim:main
           imagePullPolicy: Always
-#command: ["nr-gnb", "-c", "/etc/ueransim/open5gs-gnb.yaml"]
-          command: ["/bin/bash", "-c", "sleep 3600"]
+          command: ["nr-gnb", "-c", "/etc/ueransim/gnb.yaml"]
+# command: ["/bin/bash", "-c", "sleep 3600"]
           volumeMounts:
           - name: gnb-data-volume
             mountPath: /etc/ueransim
