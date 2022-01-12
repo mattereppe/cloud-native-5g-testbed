@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: open5gs-gnb-config
+  name: ueransim-gnb-config
   namespace: open5gs
   labels:
-    epc-mode: gnb
+    ran-role: gnb
 data:
   gnb.yaml: |
     mcc: 001

@@ -6,8 +6,8 @@ name: Docker-Open5Gs
 # documentation.
 
 on:
-  schedule:
-    - cron: '33 1 * * *'
+#  schedule:
+#    - cron: '33 1 * * *'
   push:
     branches: [ main ]
     # Publish semver tags as releases.

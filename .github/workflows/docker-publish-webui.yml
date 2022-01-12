@@ -6,8 +6,8 @@ name: Docker-WebUI
 # documentation.
 
 on:
-  schedule:
-    - cron: '39 16 * * *'
+#  schedule:
+#    - cron: '39 16 * * *'
   push:
     branches: [ main ]
     # Publish semver tags as releases.

@@ -4,7 +4,7 @@ metadata:
   name: open5gs-nssf-config
   namespace: open5gs
   labels:
-    epc-mode: nssf
+    epc-role: nssf
 data:
   nssf.yaml: |
     logger:

@@ -6,8 +6,8 @@ name: Docker-UERANSIM
 # documentation.
 
 on:
-  schedule:
-    - cron: '24 5 * * *'
+#  schedule:
+#    - cron: '24 5 * * *'
   push:
     branches: [ main ]
     # Publish semver tags as releases.

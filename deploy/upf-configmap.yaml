@@ -4,7 +4,7 @@ metadata:
   name: open5gs-upf-config
   namespace: open5gs
   labels:
-    epc-mode: upf
+    epc-role: upf
 data:
   upf.yaml: |
     logger:

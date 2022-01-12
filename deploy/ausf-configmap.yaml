@@ -4,7 +4,7 @@ metadata:
   name: open5gs-ausf-config
   namespace: open5gs
   labels:
-    epc-mode: ausf
+    epc-role: ausf
 data:
   ausf.yaml: |
     logger:

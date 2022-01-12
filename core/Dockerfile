@@ -29,6 +29,9 @@ RUN apt-get update; apt-get install -y wget gpg && \
 # Install Open5Gs and its dependencies
 		apt-get update && apt-get -y install mongodb-org open5gs 
 
+# Set Italian timezone
+echo "Europe/Rome" > /etc/timezone
+
 # This part installs testing tools and could be safely removed for "production" releases
 RUN apt-get -y install iproute2 tcpdump iputils-ping dnsutils vim procps net-tools
 

@@ -4,7 +4,7 @@ metadata:
   name: open5gs-mongodb-config
   namespace: open5gs
   labels:
-    epc-mode: mongodb
+    epc-role: mongodb
 data:
   mongod.conf: |
 

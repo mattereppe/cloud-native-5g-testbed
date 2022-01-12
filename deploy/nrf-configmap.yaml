@@ -4,13 +4,13 @@ metadata:
   name: open5gs-nrf-config
   namespace: open5gs
   labels:
-    epc-mode: nrf
+    epc-role: nrf
 data:
   nrf.yaml: |
     logger:
         file: /var/log/open5gs/nrf.log
 
-    db_uri: mongodb://localhost/open5gs
+    db_uri: mongodb://mongodb.open5gs.svc.k8s.tnt-lab.local/open5gs
     
     nrf:
         sbi:

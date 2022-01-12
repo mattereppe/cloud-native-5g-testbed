@@ -4,7 +4,7 @@ metadata:
   name: open5gs-pcf-config
   namespace: open5gs
   labels:
-    epc-mode: pcf
+    epc-role: pcf
 data:
   pcf.yaml: |
     logger:

@@ -43,18 +43,18 @@ spec:
             capabilities:
               add: ["NET_ADMIN"]
           imagePullPolicy: Always
-          command: ["open5gs-amfd", "-c", "/etc/open5gs/amf.yaml"]
+          command: ["open5gs-upfd", "-c", "/etc/open5gs/upf.yaml"]
           volumeMounts:
-          - name: amf-configmap-volume
+          - name: upf-configmap-volume
             mountPath: /etc/open5gs
           - name: dev-net-tun
             mountPath: /dev/net/tun
       imagePullSecrets: 						  # This to be removed once the image is public
         - name: k8s-secret-open5gs
       volumes:
-        - name: amf-configmap-volume
+        - name: upf-configmap-volume
           configMap:
-            name: open5gs-amf-config
+            name: open5gs-upf-config
         - name: dev-net-tun
           hostPath:
             path: /dev/net/tun

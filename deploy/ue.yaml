@@ -1,48 +1,45 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: gnb
-  namespace: open5gs
-  labels:
-    ran-role: gnodeb
-spec:
-  ports:
-  - name: rls      # Radio Link Simulator (UERANSIM-specific)
-    port: 4997
-    protocol: UDP    
-  selector:
-    ran-role: gnodeb    
----
+# Service is not necessary, until there is no way to attach an external pod with a traffic generator
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: gnb
+#  namespace: open5gs
+#  labels:
+#    ran-role: gnodeb
+#spec:
+#  ports:
+#  - name: rls      # Radio Link Simulator (UERANSIM-specific)
+#    port: 4997
+#    protocol: UDP    
+#  selector:
+#    ran-role: gnodeb    
+#---
 apiVersion: apps/v1 
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: gnb
+  name: ue
   namespace: open5gs
   labels:
     segment: ran
 spec:
   replicas: 1
-  serviceName: "gnb-svc"
   selector:
     matchLabels:
-      ran-role: gnodeb
+      ran-role: ue
   template:
     metadata:
       labels:
-        ran-role: gnodeb
+        ran-role: ue
     spec:
       initContainers:
         - name: replace-env-variables
           image: bhgedigital/envsubst
-          command: ["/bin/sh","-c","cat /tmp/gnb.yaml | envsubst > /etc/ueransim/gnb.yaml"]
+          command: ["/bin/sh","-c","cat /tmp/ue.yaml | envsubst > /etc/ueransim/ue.yaml"]
 #     command: ["/bin/sh","-c","sleep 3600"]
           volumeMounts:
-          - name: gnb-configmap-volume
+          - name: ue-configmap-volume
             mountPath: /tmp/
-# Alternatively: mount a specific file:
-#            mountPath: /gnb.yaml
-#            subPath: gnb.yaml
-          - name: gnb-data-volume
+          - name: ue-data-volume
             mountPath: /etc/ueransim
           env:
             - name: GNB_POD_IP
@@ -50,20 +47,20 @@ spec:
                 fieldRef:
                   fieldPath: status.podIP
       containers:
-        - name: gnb
+        - name: ue
           image: ghcr.io/mattereppe/ueransim:main
           imagePullPolicy: Always
-          command: ["nr-gnb", "-c", "/etc/ueransim/gnb.yaml"]
+          command: ["nr-ue", "-c", "/etc/ueransim/ue.yaml"]
 # command: ["/bin/bash", "-c", "sleep 3600"]
           volumeMounts:
-          - name: gnb-data-volume
+          - name: ue-data-volume
             mountPath: /etc/ueransim
       imagePullSecrets: 						  # This to be removed once the image is public
         - name: k8s-secret-open5gs
       volumes:
-        - name: gnb-configmap-volume
+        - name: ue-configmap-volume
           configMap:
-            name: ueransim-gnb-config
-        - name: gnb-data-volume
+            name: ueransim-ue-config
+        - name: ue-data-volume
           emptyDir: {}
 

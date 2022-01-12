@@ -4,7 +4,7 @@ metadata:
   name: open5gs-udm-config
   namespace: open5gs
   labels:
-    epc-mode: udm
+    epc-role: udm
 data:
   udm.yaml: |
     logger:
