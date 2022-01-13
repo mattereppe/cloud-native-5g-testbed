@@ -37,7 +37,9 @@ RUN cd /usr/src && \
 		ninja install && \
 		cd .. && \
 		cp install/bin/* /usr/local/bin/ && \
-		cp -r install/lib/* /usr/local/lib/
+		cp -r install/lib/* /usr/local/lib/ && \
+		cp -r install/var/* /var/ && \
+		mkdir /etc/open5gs/
 
 
 # This part installs testing tools and could be safely removed for "production" releases
