@@ -6,8 +6,8 @@ name: Open5Gs-PKGS
 # documentation.
 
 on:
-  schedule:
-    - cron: '33 9 * * *'
+#  schedule:
+#    - cron: '33 9 * * *'
   push:
     branches: [ main ]
     # Publish semver tags as releases.
@@ -19,7 +19,7 @@ env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: open5gs-pkg
 
 
 jobs:
