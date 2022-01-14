@@ -47,14 +47,19 @@ spec:
           image: ghcr.io/mattereppe/open5gs:main
           imagePullPolicy: Always
           command: ["open5gs-smfd", "-d","-c", "/etc/open5gs/smf.yaml"]
+# command: ["/bin/bash","-c","sleep 3600"]
           volumeMounts:
           - name: smf-configmap-volume
             mountPath: /etc/open5gs
-#            subPath: "amf.yaml"            # Not really necessary; just consider that all existing files are "masked" by a single mme.yaml file
+#          - name: smf-fd-configmap-volume
+#            mountPath: /etc/freeDiameter/smf.conf
+#            subPath: smf.conf
       imagePullSecrets: 						  # This to be removed once the image is public
         - name: k8s-secret-open5gs
       volumes:
         - name: smf-configmap-volume
           configMap:
             name: open5gs-smf-config
-
+#        - name: smf-fd-configmap-volume
+#          configMap:
+#            name: freediameter-smf-config
