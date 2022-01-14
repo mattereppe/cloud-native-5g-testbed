@@ -41,8 +41,9 @@ RUN cd /usr/src && \
 		ninja install && \
 		cd .. && \
 		cp install/bin/* /usr/local/bin/ && \
-		cp -r install/lib/* /usr/local/lib/ && \
+		cp -r install/lib/* /lib/ && \
 		cp -r install/var/* /var/ && \
+		cp -r install/etc/* /etc/
 		mkdir /etc/open5gs/
 
 
