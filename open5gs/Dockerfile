@@ -44,7 +44,6 @@ RUN cd /usr/src && \
 		cp -r install/lib/* /lib/ && \
 		cp -r install/var/* /var/ && \
 		cp -r install/etc/* /etc/
-		mkdir /etc/open5gs/
 
 
 # This part installs testing tools and could be safely removed for "production" releases
