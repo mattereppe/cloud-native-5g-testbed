@@ -24,11 +24,9 @@ RUN apt-get update; apt-get install -y wget gpg && \
 # Install build environment
 		apt-get update && \
 		apt-get -y install python3-pip python3-setuptools python3-wheel ninja-build build-essential flex bison git libsctp-dev libgnutls28-dev libgcrypt-dev libssl-dev libidn11-dev libmongoc-dev libbson-dev libyaml-dev libnghttp2-dev libmicrohttpd-dev libcurl4-gnutls-dev libnghttp2-dev libtins-dev libtalloc-dev meson && \
+# To be removed!!!
 # Install mongodb
 		apt-get -y install mongodb-org  
-# Install FreeDiameter extensions
-RUN apt-get -y install freediameter
-COPY config/*pem /etc/freeDiameter/
 
 # Install Open5Gs and its dependencies
 RUN cd /usr/src && \
