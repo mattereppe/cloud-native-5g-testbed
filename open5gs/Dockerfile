@@ -12,7 +12,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 ARG KEY_REP=/usr/share/keyrings/
 
 # Software version (please note that only a limited number of combinations may be possible
-ARG OPEN5GS_VERSION="v2.4.1" # "latest" or a valid repository tag
+ARG OPEN5GS_VERSION="v2.4.2" # "latest" or a valid repository tag
 ARG MONGODB_VERSION=5.0
 
 # Update and install preliminary dependencies
@@ -43,6 +43,7 @@ RUN cd /usr/src && \
 		cp -r install/var/* /var/ && \
 		cp -r install/etc/* /etc/
 
+RUN echo "Europe/Rome" > /etc/timezone
 
 # This part installs testing tools and could be safely removed for "production" releases
 RUN apt-get -y install iproute2 tcpdump iputils-ping dnsutils vim procps net-tools

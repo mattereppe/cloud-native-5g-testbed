@@ -6,6 +6,9 @@
 
 FROM debian:bullseye as sources
 
+# Software version (please note that only a limited number of combinations may be possible
+ARG UERANSIM_VERSION="latest" # "latest" or a valid repository tag
+
 # Install updates and dependencies
 RUN apt-get update && apt-get -y upgrade && \
 	apt-get -y install make g++ libsctp-dev lksctp-tools  wget git libssl-dev iproute2 && \
@@ -21,6 +24,7 @@ RUN	version=3.20.1 && \
 RUN	cd /usr/src && \
 	git clone https://github.com/aligungr/UERANSIM && \
 	cd UERANSIM && \
+	if [ "$UERANSIM_VERSION" != "latest" ]; then  git checkout $UERANSIM_VERSION ; fi && \
 	make 
 #	mv build/nr-* /usr/local/bin/ && \
 #	mv build/libdevbnd.so /usr/local/lib/ && \
@@ -43,6 +47,8 @@ RUN mkdir /etc/ueransim
 RUN apt-get update && apt-get -y upgrade && \
 	apt-get -y install libsctp1 && \
 	apt-get -y install iproute2 tcpdump procps iputils-ping dnsutils vim net-tools
+
+RUN echo "Europe/Rome" > /etc/timezone
 
 WORKDIR /usr/local/bin/
 
