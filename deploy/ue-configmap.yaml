@@ -31,11 +31,11 @@ data:
     
     configured-nssai:
       - sst: 1
-        sd: 1
+        #        sd: 1
     
     default-nssai:
       - sst: 1
-        sd: 1
+        #        sd: 1
     
     uacAic:
       mps: false

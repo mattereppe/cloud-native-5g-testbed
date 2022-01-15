@@ -33,7 +33,7 @@ metadata:
     plane: control
 spec:
   replicas: 1
-  serviceName: "smf-svc"
+  serviceName: "smf"
   selector:
     matchLabels:
       epc-role: smf
@@ -46,7 +46,7 @@ spec:
         - name: smf
           image: ghcr.io/mattereppe/open5gs:main
           imagePullPolicy: Always
-          command: ["open5gs-smfd", "-d","-c", "/etc/open5gs/smf.yaml"]
+          command: ["open5gs-smfd", "-c", "/etc/open5gs/smf.yaml"]
 # command: ["/bin/bash","-c","sleep 3600"]
           volumeMounts:
           - name: smf-configmap-volume

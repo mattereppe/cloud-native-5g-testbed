@@ -27,7 +27,7 @@ metadata:
     plane: control
 spec:
   replicas: 1
-  serviceName: "amf-svc"
+  serviceName: "amf"
   selector:
     matchLabels:
       epc-role: amf
@@ -40,7 +40,7 @@ spec:
         - name: amf
           image: ghcr.io/mattereppe/open5gs:main
           imagePullPolicy: Always
-          command: ["open5gs-amfd","-d", "-c", "/etc/open5gs/amf.yaml"]
+          command: ["open5gs-amfd", "-c", "/etc/open5gs/amf.yaml"]
           volumeMounts:
           - name: amf-configmap-volume
             mountPath: /etc/open5gs
