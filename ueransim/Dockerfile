@@ -7,7 +7,7 @@
 FROM debian:bullseye as sources
 
 # Software version (please note that only a limited number of combinations may be possible
-ARG UERANSIM_VERSION="v3.1.9" # "latest" or a valid repository tag
+ARG UERANSIM_VERSION="v3.2.6" # "latest" or a valid repository tag
 
 # Install updates and dependencies
 RUN apt-get update && apt-get -y upgrade && \
