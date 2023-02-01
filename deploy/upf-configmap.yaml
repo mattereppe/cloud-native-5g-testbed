@@ -12,9 +12,9 @@ data:
 
     upf:
         pfcp:
-          - addr: 0.0.0.0
+          - addr: $UPF_POD_IP
         gtpu:
-          - addr: 0.0.0.0
+          - addr: $UPF_POD_IP
         subnet:
           - addr: 10.45.0.1/16
           - addr: 2001:230:cafe::1/48

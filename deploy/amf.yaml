@@ -36,19 +36,35 @@ spec:
       labels:
         epc-role: amf
     spec:
+      initContainers:
+        - name: replace-env-variables
+          image: bhgedigital/envsubst
+          command: ["/bin/sh","-c","cat /tmp/amf.yaml | envsubst > /etc/open5gs/amf.yaml"]
+          volumeMounts:
+            - name: amf-configmap-volume
+              mountPath: /tmp/
+            - name: amf-data-volume
+              mountPath: /etc/open5gs/
+          env:
+            - name: AMF_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
       containers:
         - name: amf
           image: ghcr.io/mattereppe/open5gs:main
           imagePullPolicy: Always
           command: ["open5gs-amfd", "-c", "/etc/open5gs/amf.yaml"]
+#  command: ["/bin/bash","-c","sleep 3600"]
           volumeMounts:
-          - name: amf-configmap-volume
-            mountPath: /etc/open5gs
-#            subPath: "amf.yaml"            # Not really necessary; just consider that all existing files are "masked" by a single mme.yaml file
+          - name: amf-data-volume
+            mountPath: /etc/open5gs/
       imagePullSecrets: 						  # This to be removed once the image is public
         - name: k8s-secret-open5gs
       volumes:
         - name: amf-configmap-volume
           configMap:
             name: open5gs-amf-config
+        - name: amf-data-volume
+          emptyDir: {}
 

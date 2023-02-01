@@ -32,13 +32,27 @@ spec:
       labels:
         epc-role: nssf
     spec:
+      initContainers:
+        - name: replace-env-variables
+          image: bhgedigital/envsubst
+          command: ["/bin/sh","-c","cat /tmp/nssf.yaml | envsubst > /etc/open5gs/nssf.yaml"]
+          volumeMounts:
+            - name: nssf-configmap-volume
+              mountPath: /tmp/
+            - name: nssf-data-volume
+              mountPath: /etc/open5gs/
+          env:
+            - name: NSSF_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
       containers:
         - name: nssf
           image: ghcr.io/mattereppe/open5gs:main
           imagePullPolicy: Always
           command: ["open5gs-nssfd", "-c", "/etc/open5gs/nssf.yaml"]
           volumeMounts:
-          - name: nssf-configmap-volume
+          - name: nssf-data-volume
             mountPath: /etc/open5gs
       imagePullSecrets: 						  # This to be removed once the image is public
         - name: k8s-secret-open5gs
@@ -46,4 +60,6 @@ spec:
         - name: nssf-configmap-volume
           configMap:
             name: open5gs-nssf-config
+        - name: nssf-data-volume
+          emptyDir: {}
 

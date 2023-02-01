@@ -23,7 +23,7 @@ metadata:
     plane: control
 spec:
   replicas: 1
-  serviceName: "udm-svc"
+  serviceName: "udm"
   selector:
     matchLabels:
       epc-role: udm
@@ -32,13 +32,27 @@ spec:
       labels:
         epc-role: udm
     spec:
+      initContainers:
+        - name: replace-env-variables
+          image: bhgedigital/envsubst
+          command: ["/bin/sh","-c","cat /tmp/udm.yaml | envsubst > /etc/open5gs/udm.yaml"]
+          volumeMounts:
+            - name: udm-configmap-volume
+              mountPath: /tmp/
+            - name: udm-data-volume
+              mountPath: /etc/open5gs/
+          env:
+            - name: UDM_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
       containers:
         - name: udm
           image: ghcr.io/mattereppe/open5gs:main
           imagePullPolicy: Always
           command: ["open5gs-udmd", "-c", "/etc/open5gs/udm.yaml"]
           volumeMounts:
-          - name: udm-configmap-volume
+          - name: udm-data-volume
             mountPath: /etc/open5gs
       imagePullSecrets: 						  # This to be removed once the image is public
         - name: k8s-secret-open5gs
@@ -46,4 +60,6 @@ spec:
         - name: udm-configmap-volume
           configMap:
             name: open5gs-udm-config
+        - name: udm-data-volume
+          emptyDir: {}
 

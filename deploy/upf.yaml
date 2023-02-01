@@ -35,6 +35,20 @@ spec:
       labels:
         epc-role: upf
     spec:
+      initContainers:
+        - name: replace-env-variables
+          image: bhgedigital/envsubst
+          command: ["/bin/sh","-c","cat /tmp/upf.yaml | envsubst > /etc/open5gs/upf.yaml"]
+          volumeMounts:
+            - name: upf-configmap-volume
+              mountPath: /tmp/
+            - name: upf-data-volume
+              mountPath: /etc/open5gs/
+          env:
+            - name: UPF_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
       containers:
         - name: upf
           image: ghcr.io/mattereppe/open5gs:main
@@ -45,7 +59,7 @@ spec:
           imagePullPolicy: Always
           command: ["open5gs-upfd", "-c", "/etc/open5gs/upf.yaml"]
           volumeMounts:
-          - name: upf-configmap-volume
+          - name: upf-data-volume
             mountPath: /etc/open5gs
           - name: dev-net-tun
             mountPath: /dev/net/tun
@@ -55,6 +69,8 @@ spec:
         - name: upf-configmap-volume
           configMap:
             name: open5gs-upf-config
+        - name: upf-data-volume
+          emptyDir: {}
         - name: dev-net-tun
           hostPath:
             path: /dev/net/tun

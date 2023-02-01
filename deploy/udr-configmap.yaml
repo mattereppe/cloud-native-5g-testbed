@@ -16,7 +16,7 @@ data:
         file: /var/log/open5gs/udr.log
     udr:
         sbi:
-          - addr: 0.0.0.0
+          - addr: $UDR_POD_IP
             port: 7777
     
     nrf:

@@ -32,18 +32,33 @@ spec:
       labels:
         epc-role: pcf
     spec:
+      initContainers:
+        - name: replace-env-variables
+          image: bhgedigital/envsubst
+          command: ["/bin/sh","-c","cat /tmp/pcf.yaml | envsubst > /etc/open5gs/pcf.yaml"]
+          volumeMounts:
+            - name: pcf-configmap-volume
+              mountPath: /tmp
+            - name: pcf-data-volume
+              mountPath: /etc/open5gs
+          env:
+            - name: PCF_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP 
       containers:
         - name: pcf
           image: ghcr.io/mattereppe/open5gs:main
           imagePullPolicy: Always
           command: ["open5gs-pcfd", "-c", "/etc/open5gs/pcf.yaml"]
           volumeMounts:
-          - name: pcf-configmap-volume
-            mountPath: /etc/open5gs
+          - name: pcf-data-volume
+            mountPath: /etc/open5gs/
       imagePullSecrets: 						  # This to be removed once the image is public
         - name: k8s-secret-open5gs
       volumes:
         - name: pcf-configmap-volume
           configMap:
             name: open5gs-pcf-config
-
+        - name: pcf-data-volume
+          emptyDir: {}

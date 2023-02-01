@@ -14,7 +14,7 @@ data:
     
     pcf:
         sbi:
-          - addr: 0.0.0.0
+          - addr: $PCF_POD_IP
             port: 7777
     
     nrf:

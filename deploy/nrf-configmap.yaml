@@ -15,5 +15,5 @@ data:
     nrf:
         sbi:
           addr:
-            - 0.0.0.0
+            - $NRF_POD_IP
           port: 7777

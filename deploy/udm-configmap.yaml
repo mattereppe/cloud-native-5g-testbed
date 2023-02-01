@@ -12,7 +12,7 @@ data:
 
     udm:
         sbi:
-          - addr: 0.0.0.0
+          - addr: $UDM_POD_IP
             port: 7777
     
     nrf:

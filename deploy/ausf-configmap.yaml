@@ -11,7 +11,7 @@ data:
         file: /var/log/open5gs/ausf.log
     ausf:
         sbi:
-          - addr: 0.0.0.0
+          - addr: $AUSF_POD_IP
             port: 7777
     
     nrf:

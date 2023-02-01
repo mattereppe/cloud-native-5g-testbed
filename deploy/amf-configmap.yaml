@@ -11,10 +11,10 @@ data:
         file: /var/log/open5gs/amf.log
     amf:
         sbi:
-          - addr: 0.0.0.0
+          - addr: $AMF_POD_IP
             port: 7777
         ngap:
-          - addr: 0.0.0.0
+          - addr: $AMF_POD_IP
         guami:
           - plmn_id:
               mcc: 001

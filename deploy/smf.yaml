@@ -42,14 +42,27 @@ spec:
       labels:
         epc-role: smf
     spec:
+      initContainers:
+        - name: replace-env-variables
+          image: bhgedigital/envsubst
+          command: ["/bin/sh","-c","cat /tmp/smf.yaml | envsubst > /etc/open5gs/smf.yaml"]
+          volumeMounts:
+            - name: smf-configmap-volume
+              mountPath: /tmp/
+            - name: smf-data-volume
+              mountPath: /etc/open5gs/
+          env:
+            - name: SMF_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
       containers:
         - name: smf
           image: ghcr.io/mattereppe/open5gs:main
           imagePullPolicy: Always
           command: ["open5gs-smfd", "-c", "/etc/open5gs/smf.yaml"]
-# command: ["/bin/bash","-c","sleep 3600"]
           volumeMounts:
-          - name: smf-configmap-volume
+          - name: smf-data-volume
             mountPath: /etc/open5gs
 #          - name: smf-fd-configmap-volume
 #            mountPath: /etc/freeDiameter/smf.conf
@@ -60,6 +73,8 @@ spec:
         - name: smf-configmap-volume
           configMap:
             name: open5gs-smf-config
+        - name: smf-data-volume
+          emptyDir: {}
 #        - name: smf-fd-configmap-volume
 #          configMap:
 #            name: freediameter-smf-config

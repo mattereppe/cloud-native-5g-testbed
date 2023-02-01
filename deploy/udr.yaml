@@ -23,7 +23,7 @@ metadata:
     plane: control
 spec:
   replicas: 1
-  serviceName: "udr-svc"
+  serviceName: "udr"
   selector:
     matchLabels:
       epc-role: udr
@@ -32,13 +32,27 @@ spec:
       labels:
         epc-role: udr
     spec:
+      initContainers:
+        - name: replace-env-variables
+          image: bhgedigital/envsubst
+          command: ["/bin/sh","-c","cat /tmp/udr.yaml | envsubst > /etc/open5gs/udr.yaml"]
+          volumeMounts:
+            - name: udr-configmap-volume
+              mountPath: /tmp/
+            - name: udr-data-volume
+              mountPath: /etc/open5gs/
+          env:
+            - name: UDR_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
       containers:
         - name: udr
           image: ghcr.io/mattereppe/open5gs:main
           imagePullPolicy: Always
           command: ["open5gs-udrd", "-c", "/etc/open5gs/udr.yaml"]
           volumeMounts:
-          - name: udr-configmap-volume
+          - name: udr-data-volume
             mountPath: /etc/open5gs
       imagePullSecrets: 						  # This to be removed once the image is public
         - name: k8s-secret-open5gs
@@ -46,4 +60,6 @@ spec:
         - name: udr-configmap-volume
           configMap:
             name: open5gs-udr-config
+        - name: udr-data-volume
+          emptyDir: {}
 

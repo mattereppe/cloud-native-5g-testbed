@@ -32,13 +32,27 @@ spec:
       labels:
         epc-role: bsf
     spec:
+      initContainers:
+        - name: replace-env-variables
+          image: bhgedigital/envsubst
+          command: ["/bin/sh","-c","cat /tmp/bsf.yaml | envsubst > /etc/open5gs/bsf.yaml"]
+          volumeMounts:
+            - name: bsf-configmap-volume
+              mountPath: /tmp/
+            - name: bsf-data-volume
+              mountPath: /etc/open5gs/
+          env:
+            - name: BSF_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
       containers:
         - name: bsf
           image: ghcr.io/mattereppe/open5gs:main
           imagePullPolicy: Always
           command: ["open5gs-bsfd", "-c", "/etc/open5gs/bsf.yaml"]
           volumeMounts:
-          - name: bsf-configmap-volume
+          - name: bsf-data-volume
             mountPath: /etc/open5gs
       imagePullSecrets: 						  # This to be removed once the image is public
         - name: k8s-secret-open5gs
@@ -46,4 +60,6 @@ spec:
         - name: bsf-configmap-volume
           configMap:
             name: open5gs-bsf-config
+        - name: bsf-data-volume
+          emptyDir: {}
 

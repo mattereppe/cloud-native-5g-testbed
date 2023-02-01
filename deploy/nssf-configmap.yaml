@@ -11,7 +11,7 @@ data:
         file: /var/log/open5gs/nssf.log
     nssf:
         sbi:
-          - addr: 0.0.0.0
+          - addr: $NSSF_POD_IP
             port: 7777
         nsi:
           - addr: ::1

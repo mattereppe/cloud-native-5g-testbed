@@ -12,14 +12,14 @@ data:
 
     smf:
         sbi:
-          - addr: 0.0.0.0
+          - addr: $SMF_POD_IP
             port: 7777
         pfcp:
-          - addr: 0.0.0.0
+          - addr: $SMF_POD_IP
         gtpc:
-          - addr: 0.0.0.0
+          - addr: $SMF_POD_IP
         gtpu:
-          - addr: 0.0.0.0
+          - addr: $SMF_POD_IP 
         subnet:
           - addr: 10.45.0.1/16
         dns:

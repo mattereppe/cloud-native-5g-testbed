@@ -32,19 +32,35 @@ spec:
       labels:
         epc-role: nrf
     spec:
+      initContainers:
+        - name: replace-env-variables
+          image: bhgedigital/envsubst
+          command: ["/bin/sh","-c","cat /tmp/nrf.yaml | envsubst > /etc/open5gs/nrf.yaml"]
+          volumeMounts:
+            - name: nrf-configmap-volume
+              mountPath: /tmp/
+            - name: nrf-data-volume
+              mountPath: /etc/open5gs/
+          env:
+            - name: NRF_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
       containers:
         - name: nrf
           image: ghcr.io/mattereppe/open5gs:main
           imagePullPolicy: Always
-#command: ["open5gs-nrfd", "-c", "/etc/open5gs/nrf.yaml"]
-          command: ["/bin/bash","-c","sleep 3600"]
           volumeMounts:
-          - name: nrf-configmap-volume
-            mountPath: /etc/open5gs
+            - name: nrf-data-volume
+              mountPath: /etc/open5gs/
+          command: ["open5gs-nrfd", "-c", "/etc/open5gs/nrf.yaml"]
+# command: ["/bin/bash","-c","sleep 3600"]
       imagePullSecrets: 						  # This to be removed once the image is public
         - name: k8s-secret-open5gs
       volumes:
         - name: nrf-configmap-volume
           configMap:
             name: open5gs-nrf-config
+        - name: nrf-data-volume
+          emptyDir: {}
 

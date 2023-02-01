@@ -31,36 +31,18 @@ spec:
       labels:
         ran-role: ue
     spec:
-      initContainers:
-        - name: replace-env-variables
-          image: bhgedigital/envsubst
-          command: ["/bin/sh","-c","cat /tmp/ue.yaml | envsubst > /etc/ueransim/ue.yaml"]
-#     command: ["/bin/sh","-c","sleep 3600"]
-          volumeMounts:
-          - name: ue-configmap-volume
-            mountPath: /tmp/
-          - name: ue-data-volume
-            mountPath: /etc/ueransim
-          env:
-            - name: GNB_POD_IP
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
       containers:
         - name: ue
           image: ghcr.io/mattereppe/ueransim:main
           imagePullPolicy: Always
           command: ["nr-ue", "-c", "/etc/ueransim/ue.yaml"]
-# command: ["/bin/bash", "-c", "sleep 3600"]
           volumeMounts:
-          - name: ue-data-volume
-            mountPath: /etc/ueransim
+          - name: ue-configmap-volume
+            mountPath: /etc/ueransim/
       imagePullSecrets: 						  # This to be removed once the image is public
         - name: k8s-secret-open5gs
       volumes:
         - name: ue-configmap-volume
           configMap:
             name: ueransim-ue-config
-        - name: ue-data-volume
-          emptyDir: {}
 
