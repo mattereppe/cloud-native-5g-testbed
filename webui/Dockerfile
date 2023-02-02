@@ -9,8 +9,10 @@ FROM debian:bullseye
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Software version. Can be "git" (for the latest version) or "x.y.z" for an archived version.
-ARG OPEN5GS_VERSION="2.4.1"
-ARG NODEJS_VERSION="17"
+#ARG OPEN5GS_VERSION="2.4.1"
+#ARG NODEJS_VERSION="17"
+ARG OPEN5GS_VERSION="2.6.0"
+ARG NODEJS_VERSION="19"
 
 # Update and install preliminary dependencies
 RUN apt-get update; apt-get install -y wget curl git && \
