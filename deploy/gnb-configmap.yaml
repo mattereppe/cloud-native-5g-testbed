@@ -16,7 +16,7 @@ data:
     
     linkIp: $GNB_POD_IP
     ngapIp: $GNB_POD_IP
-    gtpIp: $GNB_POD_IP
+    gtpIp: 192.168.0.200
     
     amfConfigs:
       - address: 192.168.0.207
