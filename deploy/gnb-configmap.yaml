@@ -16,10 +16,10 @@ data:
     
     linkIp: $GNB_POD_IP
     ngapIp: $GNB_POD_IP
-    gtpIp: 192.168.0.200
+    gtpIp: $GNB_POD_IP
     
     amfConfigs:
-      - address: 192.168.0.207
+      - address: amf.open5gs.svc.k8s.tnt-lab.local
         port: 38412
     
     slices:

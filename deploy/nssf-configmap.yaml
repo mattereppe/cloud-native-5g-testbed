@@ -14,11 +14,10 @@ data:
           - addr: $NSSF_POD_IP
             port: 7777
         nsi:
-          - addr: ::1
+          - addr: nrf.open5gs.svc.k8s.tnt-lab.local
             port: 7777
             s_nssai:
               sst: 1
-              sd: 000001
 
     nrf:
         sbi:

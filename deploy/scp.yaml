@@ -42,7 +42,7 @@ spec:
             - name: scp-data-volume
               mountPath: /etc/open5gs/
           env:
-            - name: BSF_POD_IP
+            - name: SCP_POD_IP
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
