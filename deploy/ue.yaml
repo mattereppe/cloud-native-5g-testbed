@@ -34,15 +34,24 @@ spec:
       containers:
         - name: ue
           image: ghcr.io/mattereppe/ueransim:main
+          securityContext:
+            privileged: true
+            capabilities:
+              add: ["NET_ADMIN"]
           imagePullPolicy: Always
           command: ["nr-ue", "-c", "/etc/ueransim/ue.yaml"]
           volumeMounts:
           - name: ue-configmap-volume
             mountPath: /etc/ueransim/
+          - name: dev-net-tun
+            mountPath: /dev/net/tun
       imagePullSecrets: 						  # This to be removed once the image is public
         - name: k8s-secret-open5gs
       volumes:
         - name: ue-configmap-volume
           configMap:
             name: ueransim-ue-config
+        - name: dev-net-tun
+          hostPath:
+            path: /dev/net/tun
 

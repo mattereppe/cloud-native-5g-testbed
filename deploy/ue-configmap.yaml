@@ -26,16 +26,13 @@ data:
         apn: 'internet'
         slice:
           sst: 1
-          sd: 1
         emergency: false
-    
+ 
     configured-nssai:
       - sst: 1
-        #        sd: 1
-    
+
     default-nssai:
       - sst: 1
-        #        sd: 1
     
     uacAic:
       mps: false
