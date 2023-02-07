@@ -57,7 +57,14 @@ spec:
             capabilities:
               add: ["NET_ADMIN"]
           imagePullPolicy: Always
-          command: ["open5gs-upfd", "-c", "/etc/open5gs/upf.yaml"]
+#          command: ["open5gs-upfd", "-c", "/etc/open5gs/upf.yaml"]
+          command: ["/bin/sh", "-c"]
+# TODO: Enable forwarding and natting
+          args:
+            - ip tuntap add name ogstun mode tun;
+              ip addr add 10.45.0.1/16 dev ogstun;
+              ip link set ogstun up; 
+              open5gs-upfd -c /etc/open5gs/upf.yaml				  
           volumeMounts:
           - name: upf-data-volume
             mountPath: /etc/open5gs
