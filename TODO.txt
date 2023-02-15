@@ -6,3 +6,17 @@ Since for testing and debugging purpose editing files is more practical that cha
 are embedded in the yaml, I manually create the ConfigMap when needed for now. 
 
 Later on, I would likely switch to the declarative approach with more stable versions of the files.
+
+
+Persistent storage
+==================
+Persistent storage requires a NFS filesystem available from a server. Temporary storage could be used as
+well or embedded in the image.
+
+The current configuration requires to export the fs with no_root_squash:
+/srv/mongodb	172.21.100.0/24(rw,sync,no_subtree_check,no_root_squash)
+
+
+Secrets
+=======
+Remove any secrets and make the repository public.
