@@ -74,7 +74,7 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@v4 #v4.0.0 at the time of change
         with:
-          context: ./webui
+          context: ./build/webui
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
