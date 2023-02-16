@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: open5gs-webui-config
+  namespace: $K8S_NAMESPACE
+  labels:
+    role: webui
+data:
+  DB_URI: mongodb://mongodb.$K8S_NAMESPACE.svc.$K8S_DOMAIN/open5gs
+  HOSTNAME: "0.0.0.0"
+  PORT: "3000"
+  NODE_ENV: production
+  SECRET_KEY: "change-me"

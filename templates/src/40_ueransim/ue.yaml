@@ -1,0 +1,57 @@
+# Service is not necessary, until there is no way to attach an external pod with a traffic generator
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: gnb
+#  namespace: $K8S_NAMESPACE
+#  labels:
+#    ran-role: gnodeb
+#spec:
+#  ports:
+#  - name: rls      # Radio Link Simulator (UERANSIM-specific)
+#    port: 4997
+#    protocol: UDP    
+#  selector:
+#    ran-role: gnodeb    
+#---
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: ue
+  namespace: $K8S_NAMESPACE
+  labels:
+    segment: ran
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      ran-role: ue
+  template:
+    metadata:
+      labels:
+        ran-role: ue
+    spec:
+      containers:
+        - name: ue
+          image: ghcr.io/mattereppe/ueransim:main
+          securityContext:
+            privileged: true
+            capabilities:
+              add: ["NET_ADMIN"]
+          imagePullPolicy: Always
+          command: ["nr-ue", "-c", "/etc/ueransim/ue.yaml"]
+          volumeMounts:
+          - name: ue-configmap-volume
+            mountPath: /etc/ueransim/
+          - name: dev-net-tun
+            mountPath: /dev/net/tun
+      imagePullSecrets: 						  # This to be removed once the image is public
+        - name: k8s-secret-open5gs
+      volumes:
+        - name: ue-configmap-volume
+          configMap:
+            name: ueransim-ue-config
+        - name: dev-net-tun
+          hostPath:
+            path: /dev/net/tun
+

@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: open5gs-smf-config
+  namespace: $K8S_NAMESPACE
+  labels:
+    epc-role: smf
+data:
+  smf.yaml: |
+    logger:
+        file: /var/log/open5gs/smf.log
+
+    smf:
+        sbi:
+          - addr: $SMF_POD_IP
+            port: 7777
+        pfcp:
+          - addr: $SMF_POD_IP
+        gtpc:
+          - addr: $SMF_POD_IP
+        gtpu:
+          - addr: $SMF_POD_IP 
+        subnet:
+          - addr: 10.45.0.1/16
+        dns:
+          - 8.8.8.8
+          - 8.8.4.4
+        mtu: 1400
+        freeDiameter: /etc/freeDiameter/smf.conf
+    
+    nrf:
+        sbi:
+          - addr:
+              - nrf.$K8S_NAMESPACE.svc.$K8S_DOMAIN
+            port: 7777
+    
+    upf:
+        pfcp:
+          - name: upf.$K8S_NAMESPACE.svc.$K8S_DOMAIN
+            apn: internet

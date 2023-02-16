@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: open5gs-ausf-config
+  namespace: $K8S_NAMESPACE
+  labels:
+    epc-role: ausf
+data:
+  ausf.yaml: |
+    logger:
+        file: /var/log/open5gs/ausf.log
+    ausf:
+        sbi:
+          - addr: $AUSF_POD_IP
+            port: 7777
+    
+    nrf:
+        sbi:
+          - addr:
+              - nrf.$K8S_NAMESPACE.svc.$K8S_DOMAIN
+            port: 7777

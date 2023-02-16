@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: open5gs-mongodb-config
+  namespace: $K8S_NAMESPACE
+  labels:
+    epc-role: mongodb
+data:
+  mongod.conf: |
+
+    storage:
+      dbPath: /srv/
+      journal:
+        enabled: true
+    
+    systemLog:
+      logAppend: true
+    
+    net:
+      port: 27017
+      bindIp: 0.0.0.0
+    
+    
+    processManagement:
+      timeZoneInfo: /usr/share/zoneinfo
+
+
+
+
+
+
+

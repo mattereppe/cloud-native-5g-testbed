@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: open5gs-upf-config
+  namespace: $K8S_NAMESPACE
+  labels:
+    epc-role: upf
+data:
+  upf.yaml: |
+    logger:
+        file: /var/log/open5gs/upf.log
+
+    upf:
+        pfcp:
+          - addr: $UPF_POD_IP
+        gtpu:
+          - addr: $UPF_POD_IP
+        subnet:
+          - addr: 10.45.0.1/16
+          - addr: 2001:230:cafe::1/48

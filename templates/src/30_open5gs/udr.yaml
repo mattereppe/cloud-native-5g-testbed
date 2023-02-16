@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: udr
+  namespace: $K8S_NAMESPACE
+  labels:
+    epc-role: udr
+spec:
+  ports:
+  - name: sbi      # Service Based Interface (web interface "bus" in the control plane)
+    port: 7777
+    protocol: TCP    
+  selector:
+    epc-role: udr    
+---
+apiVersion: apps/v1 
+kind: StatefulSet
+metadata:
+  name: udr
+  namespace: $K8S_NAMESPACE
+  labels:
+    segment: core
+    plane: control
+spec:
+  replicas: 1
+  serviceName: "udr"
+  selector:
+    matchLabels:
+      epc-role: udr
+  template:
+    metadata:
+      labels:
+        epc-role: udr
+    spec:
+      initContainers:
+        - name: replace-env-variables
+          image: bhgedigital/envsubst
+          command: ["/bin/sh","-c","cat /tmp/udr.yaml | envsubst > /etc/open5gs/udr.yaml"]
+          volumeMounts:
+            - name: udr-configmap-volume
+              mountPath: /tmp/
+            - name: udr-data-volume
+              mountPath: /etc/open5gs/
+          env:
+            - name: UDR_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+      containers:
+        - name: udr
+          image: ghcr.io/mattereppe/open5gs:main
+          imagePullPolicy: Always
+          command: ["open5gs-udrd", "-c", "/etc/open5gs/udr.yaml"]
+          volumeMounts:
+          - name: udr-data-volume
+            mountPath: /etc/open5gs
+      imagePullSecrets: 						  # This to be removed once the image is public
+        - name: k8s-secret-open5gs
+      volumes:
+        - name: udr-configmap-volume
+          configMap:
+            name: open5gs-udr-config
+        - name: udr-data-volume
+          emptyDir: {}
+

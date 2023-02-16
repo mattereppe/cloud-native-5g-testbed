@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: upf
+  namespace: $K8S_NAMESPACE
+  labels:
+    epc-role: upf
+spec:
+  ports:
+  - name: pfcp      # Packet Forwarding Control Protocol (SDN-like packet forwarding rules)
+    port: 8805
+    protocol: UDP    
+  - name: gtpu		# GPRS Tunnelling Protocol - User data tunneling
+    port: 2152
+    protocol: UDP
+  selector:
+    epc-role: upf    
+---
+apiVersion: apps/v1 
+kind: StatefulSet
+metadata:
+  name: upf
+  namespace: $K8S_NAMESPACE
+  labels:
+    segment: core
+    plane: user
+spec:
+  replicas: 1
+  serviceName: "upf-svc"
+  selector:
+    matchLabels:
+      epc-role: upf
+  template:
+    metadata:
+      labels:
+        epc-role: upf
+    spec:
+      initContainers:
+        - name: replace-env-variables
+          image: bhgedigital/envsubst
+          command: ["/bin/sh","-c","cat /tmp/upf.yaml | envsubst > /etc/open5gs/upf.yaml"]
+          volumeMounts:
+            - name: upf-configmap-volume
+              mountPath: /tmp/
+            - name: upf-data-volume
+              mountPath: /etc/open5gs/
+          env:
+            - name: UPF_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+      containers:
+        - name: upf
+          image: ghcr.io/mattereppe/open5gs:main
+          securityContext:
+            privileged: true
+            capabilities:
+              add: ["NET_ADMIN"]
+          imagePullPolicy: Always
+#          command: ["open5gs-upfd", "-c", "/etc/open5gs/upf.yaml"]
+          command: ["/bin/sh", "-c"]
+# TODO: Enable forwarding and natting
+          args:
+            - ip tuntap add name ogstun mode tun;
+              ip addr add 10.45.0.1/16 dev ogstun;
+              ip link set ogstun up; 
+              open5gs-upfd -c /etc/open5gs/upf.yaml				  
+          volumeMounts:
+          - name: upf-data-volume
+            mountPath: /etc/open5gs
+          - name: dev-net-tun
+            mountPath: /dev/net/tun
+      imagePullSecrets: 						  # This to be removed once the image is public
+        - name: k8s-secret-open5gs
+      volumes:
+        - name: upf-configmap-volume
+          configMap:
+            name: open5gs-upf-config
+        - name: upf-data-volume
+          emptyDir: {}
+        - name: dev-net-tun
+          hostPath:
+            path: /dev/net/tun
+

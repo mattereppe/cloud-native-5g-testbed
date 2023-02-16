@@ -22,7 +22,7 @@ DEPLOY := $(subst $(TEMPLATE_DIR),$(DEPLOY_DIR),$(TEMPLATE))
 
 all: $(K8S_DEPLOY_FILE)
 
-.PHONY: clean config deploy-clean help deploy
+.PHONY: clean config deploy-clean help 
 
 help:
 	@echo "Cloud-native 5G deployment"
@@ -32,6 +32,7 @@ help:
 	@echo "install:      Install yaml files for deployment. Do not change existing deployment"
 	@echo "deploy:       Prepare a single deployment file for the 5G testbed"
 	@echo "run:          Run the 5G testbed"
+	@echo "delete:       Delete K8S resources of the 5G testebed"
 	@echo "all:          Create K8S deployment file"
 	@echo "clean:        Remove build files. Do not touch current deployment files"
 	@echo "deploy-clean: Remove all deployment files"
@@ -78,3 +79,6 @@ deploy: $(K8S_DEPLOY_FILE)
 
 run: $(K8S_DEPLOY_FILE)
 	kubectl apply -f $<
+
+delete: $(K8S_DEPLOY_FILE)
+	kubectl delete -f $<

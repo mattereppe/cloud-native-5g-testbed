@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+  namespace: $K8S_NAMESPACE
+spec:
+  ports:
+  - name: mongodb 
+    port: 27017
+    protocol: TCP    
+    targetPort: 27017
+  clusterIP: None # Load balancing should not be used for a datastore
+  selector:
+    epc-role: mongodb    
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: static-pv-mongodb
+  namespace: $K8S_NAMESPACE
+spec:
+  storageClassName: static-pv
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: apps/v1 
+kind: StatefulSet
+metadata:
+  name: mongodb
+  namespace: $K8S_NAMESPACE
+  labels:
+    segment: core
+    plane: control
+spec:
+#terminationGracePeriodSeconds: 10
+  replicas: 1
+  serviceName: "mongodb-svc"
+  selector:
+    matchLabels:
+      epc-role: mongodb
+  template:
+    metadata:
+      labels:
+        epc-role: mongodb
+    spec:
+      volumes:
+        - name: pv-mongodb
+          persistentVolumeClaim:
+            claimName: static-pv-mongodb
+        - name: mongodb-configmap-volume
+          configMap:
+            name: open5gs-mongodb-config
+      containers:
+        - name: mongodb
+          image: ghcr.io/mattereppe/open5gs:main
+          imagePullPolicy: Always
+          command: 
+            - mongod
+            - "--config"
+            - "/etc/mongod.conf"
+#            - "--replSet"
+#            - rs0
+#            - "--smallfiles"
+#            - "--noprealloc"
+          volumeMounts:
+          - name: pv-mongodb
+            mountPath: /srv
+          - name: mongodb-configmap-volume
+            mountPath: /etc/mongod.conf
+            subPath: mongod.conf
+      imagePullSecrets: 						  # This to be removed once the image is public
+        - name: k8s-secret-open5gs
+

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: open5gs-nrf-config
+  namespace: $K8S_NAMESPACE
+  labels:
+    epc-role: nrf
+data:
+  nrf.yaml: |
+    logger:
+        file: /var/log/open5gs/nrf.log
+
+    db_uri: mongodb://mongodb.$K8S_NAMESPACE.svc.$K8S_DOMAIN/open5gs
+    
+    nrf:
+        sbi:
+          addr:
+            - $NRF_POD_IP
+          port: 7777

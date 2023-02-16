@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gnb
+  namespace: $K8S_NAMESPACE
+  labels:
+    ran-role: gnodeb
+spec:
+  ports:
+  - name: rls      # Radio Link Simulator (UERANSIM-specific)
+    port: 4997
+    protocol: UDP    
+  selector:
+    ran-role: gnodeb    
+---
+apiVersion: apps/v1 
+kind: StatefulSet
+metadata:
+  name: gnb
+  namespace: $K8S_NAMESPACE
+  labels:
+    segment: ran
+spec:
+  replicas: 1
+  serviceName: "gnb-svc"
+  selector:
+    matchLabels:
+      ran-role: gnodeb
+  template:
+    metadata:
+      labels:
+        ran-role: gnodeb
+    spec:
+      initContainers:
+        - name: replace-env-variables
+          image: bhgedigital/envsubst
+          command: ["/bin/sh","-c","cat /tmp/gnb.yaml | envsubst > /etc/ueransim/gnb.yaml"]
+          volumeMounts:
+          - name: gnb-configmap-volume
+            mountPath: /tmp/
+# Alternatively: mount a specific file:
+#            mountPath: /gnb.yaml
+#            subPath: gnb.yaml
+          - name: gnb-data-volume
+            mountPath: /etc/ueransim
+          env:
+            - name: GNB_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+      containers:
+        - name: gnb
+          image: ghcr.io/mattereppe/ueransim:main
+          imagePullPolicy: Always
+          command: ["nr-gnb", "-c", "/etc/ueransim/gnb.yaml"]
+# command: ["/bin/bash","-c","sleep 3660"]
+          volumeMounts:
+          - name: gnb-data-volume
+            mountPath: /etc/ueransim
+      imagePullSecrets: 						  # This to be removed once the image is public
+        - name: k8s-secret-open5gs
+      volumes:
+        - name: gnb-configmap-volume
+          configMap:
+            name: ueransim-gnb-config
+        - name: gnb-data-volume
+          emptyDir: {}
+
