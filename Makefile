@@ -4,8 +4,17 @@
 # Paths and filenames
 DEPLOY_DIR := deploy
 BUILD_DIR := build
+CONFIG_DIR := config
 TEMPLATE_DIR := templates
 K8S_DEPLOY_FILE := $(DEPLOY_DIR)/open5gs.yaml
+ENV_FILE := open5gs.env
+
+# Load the configuration file as environment variables
+include  config/open5gs.env
+export
+# Note: it is necessary to explicitly list all variables to be replaced, because there are
+# additional variables that will be replaced at deployment time.
+ENV_VARS := $(shell grep -v '^\#' config/open5gs.env | sed -e 's/\(.*\)/$$\1/' | cut -d '=' -f1 | xargs )
 
 # Dependencies
 TEMPLATE := $(wildcard $(TEMPLATE_DIR)/*/*/*.yaml) 
@@ -38,11 +47,10 @@ deepclean: clean deploy-clean
 $(BUILD_DIR)/%.yaml: 
 	@echo "Creating: " $@
 	@test -d `dirname $@` || mkdir -p `dirname $@`
-	@envsubst < $(subst $(BUILD_DIR),$(TEMPLATE_DIR),$@) > $@
+	@envsubst '$(ENV_VARS)' < $(subst $(BUILD_DIR),$(TEMPLATE_DIR),$@) > $@
 
 config: $(subst $(TEMPLATE_DIR),$(BUILD_DIR),$(TEMPLATE))
 	@echo "Configuration completed!"
-	@echo $(BUILD)
 
 $(DEPLOY_DIR)/%.yaml: $(BUILD_DIR)/%.yaml
 	@echo "Installing: " $@
