@@ -11,4 +11,4 @@ spec:
     - ReadWriteMany
   nfs:
     path: /srv/mongodb
-    server: 172.21.100.31
+    server: $NFS_SERVER

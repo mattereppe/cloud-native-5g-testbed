@@ -27,9 +27,6 @@ RUN apt-get update; apt-get install -y wget gpg && \
 
 COPY mongo-init /tmp/mongo-init
 
-RUN mongod --fork --dbpath /srv --logpath /tmp/mongo.log && \
-	mongorestore /tmp/mongo-init --drop
-
 RUN echo "Europe/Rome" > /etc/timezone
 
 # This part installs testing tools and could be safely removed for "production" releases

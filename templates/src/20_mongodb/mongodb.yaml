@@ -48,14 +48,35 @@ spec:
     spec:
       volumes:
         - name: pv-mongodb
+#          Change to the following if you want to use ephemeral storage
+#          emptyDir: {}
           persistentVolumeClaim:
             claimName: static-pv-mongodb
         - name: mongodb-configmap-volume
           configMap:
             name: open5gs-mongodb-config
+      initContainers:
+        - name: init-mongodb
+          image: ghcr.io/mattereppe/mongodb:main
+          imagePullPolicy: Always
+          volumeMounts:
+          - name: pv-mongodb
+            mountPath: /srv
+          - name: mongodb-configmap-volume
+            mountPath: /etc/mongod.conf
+            subPath: mongod.conf
+          command: ["/bin/bash","-c"]
+          args:
+            - if [ $INIT_MONGODB -eq 1 ]; then 
+              touch /srv/INITIALIZED; 
+              mongod --fork --config /etc/mongod.conf --logpath /var/log/mongo.log;
+              mongorestore /tmp/mongo-init --drop;
+              else
+              test -e /srv/INITIALIZED && rm -f /srv/INITIALIZED;
+              fi;
       containers:
         - name: mongodb
-          image: ghcr.io/mattereppe/open5gs:main
+          image: ghcr.io/mattereppe/mongodb:main
           imagePullPolicy: Always
           command: 
             - mongod
