@@ -6,6 +6,7 @@ DEPLOY_DIR := deploy
 BUILD_DIR := build
 CONFIG_DIR := config
 TEMPLATE_DIR := templates
+INIT_DIR := init
 K8S_DEPLOY_FILE := $(DEPLOY_DIR)/open5gs.yaml
 ENV_FILE := open5gs.env
 
@@ -18,7 +19,12 @@ ENV_VARS := $(shell grep -v '^\#' $(CONFIG_DIR)/$(ENV_FILE) | sed -e 's/\(.*\)/$
 
 # Dependencies
 TEMPLATE := $(wildcard $(TEMPLATE_DIR)/*/*/*.yaml) 
+# Only works if the folder structure is preserved as it is now!!!
+INIT := $(wildcard $(TEMPLATE_DIR)/$(INIT_DIR)/*.yaml)
 DEPLOY := $(subst $(TEMPLATE_DIR),$(DEPLOY_DIR),$(TEMPLATE))
+# Currently not used, because the directory structure automatically filters out the init folder
+#TEMPLATE_DIRS := $(wildcard $(TEMPLATE_DIR)/*)
+#TEMPLATE_BUILDS := $(filter-out $(INIT_TEMPLATES), $(TEMPLATE_DIRS))
 
 all: $(K8S_DEPLOY_FILE)
 
@@ -51,7 +57,11 @@ $(BUILD_DIR)/%.yaml:
 	@test -d `dirname $@` || mkdir -p `dirname $@`
 	@envsubst '$(ENV_VARS)' < $(subst $(BUILD_DIR),$(TEMPLATE_DIR),$@) > $@
 
-config: $(subst $(TEMPLATE_DIR),$(BUILD_DIR),$(TEMPLATE))
+$(INIT_DIR)/%.yaml:
+	@echo "Creating: " $@
+	@envsubst '$(ENV_VARS)' < $(TEMPLATE_DIR)/$@ > $@
+
+config: $(subst $(TEMPLATE_DIR),$(BUILD_DIR),$(TEMPLATE))  $(subst $(TEMPLATE_DIR),$(INIT_DIR),$(subst $(INIT_DIR)/,,$(INIT)))
 	@echo "Configuration completed!"
 
 $(DEPLOY_DIR)/%.yaml: $(BUILD_DIR)/%.yaml
@@ -59,7 +69,11 @@ $(DEPLOY_DIR)/%.yaml: $(BUILD_DIR)/%.yaml
 	@test -d `dirname $@` || mkdir -p `dirname $@`
 	@install $(subst $(DEPLOY_DIR),$(BUILD_DIR),$@) $@
 
-install: $(subst $(TEMPLATE_DIR),$(DEPLOY_DIR),$(TEMPLATE))
+init: 
+	@echo "init dir: " $(INIT_DIR)
+	@echo "init templates: " $(INIT)
+
+install: $(subst $(TEMPLATE_DIR),$(DEPLOY_DIR),$(TEMPLATE)) 
 	@echo "Configuration installed!"
 
 $(K8S_DEPLOY_FILE): $(DEPLOY) Makefile
