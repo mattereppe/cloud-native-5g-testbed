@@ -3,7 +3,7 @@
 # Binaries are taken from official software repositories.
 #
 
-FROM debian:bullseye
+FROM debian:bullseye as sources
 
 # Disable interactive mode for apt
 ARG DEBIAN_FRONTEND=noninteractive
@@ -13,23 +13,12 @@ ARG KEY_REP=/usr/share/keyrings/
 
 # Software version (please note that only a limited number of combinations may be possible
 #ARG OPEN5GS_VERSION="v2.2.8" # "latest" or a valid repository tag
-#ARG MONGODB_VERSION=5.0
 #ARG OPEN5GS_VERSION="v2.4.14" 
 ARG OPEN5GS_VERSION="v2.6.0" 
-ARG MONGODB_VERSION=6.0
 
-# Update and install preliminary dependencies
-RUN apt-get update; apt-get install -y wget gpg && \
-# Add the necessary repositories and keys
-		wget -qO - https://www.mongodb.org/static/pgp/server-$MONGODB_VERSION.asc | gpg --dearmor > $KEY_REP/mongodb-org-archive-keyring.gpg && \
-	echo "deb [signed-by=$KEY_REP/mongodb-org-archive-keyring.gpg] http://repo.mongodb.org/apt/debian buster/mongodb-org/$MONGODB_VERSION main" | \
-		tee /etc/apt/sources.list.d/mongodb-org.list && \
 # Install build environment
-		apt-get update && \
+RUN apt-get update && \
 		apt-get -y install python3-pip python3-setuptools python3-wheel ninja-build build-essential flex bison git libsctp-dev libgnutls28-dev libgcrypt-dev libssl-dev libidn11-dev libmongoc-dev libbson-dev libyaml-dev libnghttp2-dev libmicrohttpd-dev libcurl4-gnutls-dev libnghttp2-dev libtins-dev libtalloc-dev meson cmake && \
-# To be removed!!!
-# Install mongodb
-		apt-get -y install mongodb-org  
 
 # Install Open5Gs and its dependencies
 RUN cd /usr/src && \
