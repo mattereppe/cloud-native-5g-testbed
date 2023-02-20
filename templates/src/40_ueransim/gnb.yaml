@@ -38,9 +38,6 @@ spec:
           volumeMounts:
           - name: gnb-configmap-volume
             mountPath: /tmp/
-# Alternatively: mount a specific file:
-#            mountPath: /gnb.yaml
-#            subPath: gnb.yaml
           - name: gnb-data-volume
             mountPath: /etc/ueransim
           env:
@@ -57,6 +54,17 @@ spec:
           volumeMounts:
           - name: gnb-data-volume
             mountPath: /etc/ueransim
+# TODO: replace with better script that takes into account a different name for gnb
+          livenessProbe:
+            exec:
+              command:
+              - nr-cli 
+              - UERANSIM-gnb-1-1-1 
+              - --exec 
+              - amf-list
+            initialDelaySeconds: 5
+            periodSeconds: 10
+      restartPolicy: Always
       imagePullSecrets: 						  # This to be removed once the image is public
         - name: k8s-secret-open5gs
       volumes:
