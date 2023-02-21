@@ -45,6 +45,17 @@ spec:
             mountPath: /etc/ueransim/
           - name: dev-net-tun
             mountPath: /dev/net/tun
+          livenessProbe:
+            exec:
+              command:
+              - ip
+              - a 
+              - show
+              - dev
+              - uesimtun0
+            initialDelaySeconds: 10
+            periodSeconds: 30
+      restartPolicy: Always
       imagePullSecrets: 						  # This to be removed once the image is public
         - name: k8s-secret-open5gs
       volumes:
