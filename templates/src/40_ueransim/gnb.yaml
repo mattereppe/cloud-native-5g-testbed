@@ -58,10 +58,11 @@ spec:
           livenessProbe:
             exec:
               command:
-              - nr-cli 
-              - UERANSIM-gnb-1-1-1 
-              - --exec 
-              - amf-list
+              - /bin/bash
+              - -c
+              - |-
+                amflist=`nr-cli UERANSIM-gnb-1-1-1 --exec amf-list`;
+                 test -n "$amflist" || exit 1;
             initialDelaySeconds: 5
             periodSeconds: 10
       restartPolicy: Always

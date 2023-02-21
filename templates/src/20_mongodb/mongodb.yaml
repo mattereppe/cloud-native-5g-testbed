@@ -67,12 +67,13 @@ spec:
             subPath: mongod.conf
           command: ["/bin/bash","-c"]
           args:
-            - if [ $INIT_MONGODB -eq 1 ]; then 
+            - |-
+              if [ "$INIT_MONGODB" -eq "1" ]; then 
               touch /srv/INITIALIZED; 
               mongod --fork --config /etc/mongod.conf --logpath /var/log/mongo.log;
               mongorestore /tmp/mongo-init --drop;
               else
-              test -e /srv/INITIALIZED && rm -f /srv/INITIALIZED;
+              if [ -e /srv/INITIALIZED ]; then rm -f /srv/INITIALIZED; fi;
               fi;
       containers:
         - name: mongodb
