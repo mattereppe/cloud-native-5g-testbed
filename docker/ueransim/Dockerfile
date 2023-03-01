@@ -34,14 +34,13 @@ RUN	cd /usr/src && \
 	patch -p1 < ../ueransim-datanetworks-$UERANSIM_VERSION.patch && \
 	make 
 
-#FROM debian:bullseye
-#
-## Copy relevant files
-#COPY --from=sources /usr/src/UERANSIM/build/nr-* /usr/local/bin/
-#COPY --from=sources /usr/src/UERANSIM/build/libdevbnd.so /usr/local/lib/
+FROM debian:bullseye
 
-RUN pwd
-RUN cp -a /usr/src/UERANSIM/build/nr-* /usr/local/bin/ && cp -a /usr/src/UERANSIM/build/libdevbnd.so /usr/local/lib/
+# Copy relevant files
+COPY --from=sources /usr/src/UERANSIM/build/nr-* /usr/local/bin/
+COPY --from=sources /usr/src/UERANSIM/build/libdevbnd.so /usr/local/lib/
+
+#RUN cp -a /usr/src/UERANSIM/build/nr-* /usr/local/bin/ && cp -a /usr/src/UERANSIM/build/libdevbnd.so /usr/local/lib/
 
 RUN mkdir /etc/ueransim
 RUN apt-get update && apt-get -y upgrade && \
