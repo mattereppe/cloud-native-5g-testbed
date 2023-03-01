@@ -25,7 +25,7 @@ RUN	cd /usr/src && \
 	git clone https://github.com/aligungr/UERANSIM && \
 	cd UERANSIM && \
 	if [ "$UERANSIM_VERSION" != "latest" ]; then  git checkout $UERANSIM_VERSION ; fi && \
-	patch -p1 ../ueransim-datanetworks-$version.patch
+	patch -p1 ../ueransim-datanetworks-$version.patch && \
 	make 
 
 FROM debian:bullseye
