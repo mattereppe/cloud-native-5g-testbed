@@ -20,12 +20,12 @@ RUN	version=3.20.1 && \
 	cd cmake-$version &&  \
 	./bootstrap && make -j `nproc` && make install && ldconfig 
 # Install UERANSIM from sources
-COPY patches/ueransim-datanetworks-$version.patch /usr/src/
+COPY ./patches/ueransim-datanetworks-$UERANSIM_VERSION.patch /usr/src/
 RUN	cd /usr/src && \
 	git clone https://github.com/aligungr/UERANSIM && \
 	cd UERANSIM && \
 	if [ "$UERANSIM_VERSION" != "latest" ]; then  git checkout $UERANSIM_VERSION ; fi && \
-	patch -p1 ../ueransim-datanetworks-$version.patch && \
+	patch -p1 ../ueransim-datanetworks-$UERANSIM_VERSION.patch && \
 	make 
 
 FROM debian:bullseye
