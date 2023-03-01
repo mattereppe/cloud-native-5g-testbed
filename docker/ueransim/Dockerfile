@@ -31,7 +31,7 @@ RUN	cd /usr/src && \
 	git clone https://github.com/aligungr/UERANSIM && \
 	cd UERANSIM && \
 	if [ "$UERANSIM_VERSION" != "latest" ]; then  git checkout $UERANSIM_VERSION ; fi && \
-	patch -p1 ../ueransim-datanetworks-$UERANSIM_VERSION.patch && \
+	patch -p1 < ../ueransim-datanetworks-$UERANSIM_VERSION.patch && \
 	make 
 
 #FROM debian:bullseye
@@ -40,7 +40,7 @@ RUN	cd /usr/src && \
 #COPY --from=sources /usr/src/UERANSIM/build/nr-* /usr/local/bin/
 #COPY --from=sources /usr/src/UERANSIM/build/libdevbnd.so /usr/local/lib/
 
-RUN cp build/nr-* /usr/local/bin/ && cp build/libdevbnd.so /usr/local/lib/
+RUN cp -a build/nr-* /usr/local/bin/ && cp -a build/libdevbnd.so /usr/local/lib/
 
 RUN mkdir /etc/ueransim
 RUN apt-get update && apt-get -y upgrade && \
