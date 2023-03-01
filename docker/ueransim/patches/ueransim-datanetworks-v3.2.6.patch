@@ -1,0 +1,153 @@
+diff -urN UERANSIM-orig/src/ue/app/task.cpp UERANSIM/src/ue/app/task.cpp
+--- UERANSIM-orig/src/ue/app/task.cpp	2023-03-01 07:28:00.768093141 +0000
++++ UERANSIM/src/ue/app/task.cpp	2023-03-01 07:34:58.853341186 +0000
+@@ -189,7 +189,7 @@
+ 
+     std::string ipAddress = utils::OctetStringToIp(pduSession->pduAddress->pduAddressInformation);
+ 
+-    bool r = tun::TunConfigure(allocatedName, ipAddress, cons::TunMtu, m_base->config->configureRouting, error);
++    bool r = tun::TunConfigure(allocatedName, ipAddress, cons::TunMtu, m_base->config->configureRouting, error, &(m_base->config->dataNetworkList));
+     if (!r || error.length() > 0)
+     {
+         m_logger->err("TUN configuration failure [%s]", error.c_str());
+diff -urN UERANSIM-orig/src/ue/tun/config.cpp UERANSIM/src/ue/tun/config.cpp
+--- UERANSIM-orig/src/ue/tun/config.cpp	2023-03-01 07:17:10.884356689 +0000
++++ UERANSIM/src/ue/tun/config.cpp	2023-03-01 07:40:35.119129689 +0000
+@@ -299,14 +299,26 @@
+ 
+     for (auto &line : will_remove)
+         ExecStrict(line);
++
++    /* 
++     * Additional routes to the data networks are automatically removed when the interface is torn down.
++     */
+ }
+ 
+-static void AddIpRoutes(const std::string &if_name, const std::string &table_name)
++static void AddIpRoutes(const std::string &if_name, const std::string &table_name, const std::vector<std::string> *dataNetworks = nullptr)
+ {
+     std::stringstream cmd;
+     cmd << "ip route add default dev " << if_name << " table " << table_name;
+ 
+     std::string output = ExecStrict(cmd.str());
++
++    if( dataNetworks != nullptr ) {
++	 for(size_t i=0; i< dataNetworks->size(); i++) {
++	    cmd.str("");
++       	    cmd << "ip route add " << (*dataNetworks)[i] << " dev " << if_name;
++   	    output = ExecStrict(cmd.str());
++	 }
++    }
+ }
+ 
+ namespace nr::ue::tun
+@@ -350,7 +362,7 @@
+     return fd;
+ }
+ 
+-void ConfigureTun(const char *tunName, const char *ipAddr, int mtu, bool configureRoute)
++void ConfigureTun(const char *tunName, const char *ipAddr, int mtu, bool configureRoute, const std::vector<std::string> *dataNetworks)
+ {
+     // acquire the configuration lock
+     const std::lock_guard<std::mutex> lock(configMutex);
+@@ -364,7 +376,7 @@
+         RemoveExistingIpRules(ipAddr);
+         AddNewIpRules(ipAddr, table_name);
+         RemoveExistingIpRoutes(tunName, table_name);
+-        AddIpRoutes(tunName, table_name);
++        AddIpRoutes(tunName, table_name, dataNetworks);
+     }
+ }
+ 
+diff -urN UERANSIM-orig/src/ue/tun/config.hpp UERANSIM/src/ue/tun/config.hpp
+--- UERANSIM-orig/src/ue/tun/config.hpp	2023-03-01 07:17:10.884356689 +0000
++++ UERANSIM/src/ue/tun/config.hpp	2023-02-28 16:22:00.000000000 +0000
+@@ -11,11 +11,12 @@
+ #include <sstream>
+ #include <string>
+ #include <utility>
++#include <vector>
+ 
+ namespace nr::ue::tun
+ {
+ 
+ int AllocateTun(const char *ifPrefix, char **allocatedName);
+-void ConfigureTun(const char *tunName, const char *ipAddr, int mtu, bool configureRoute);
++void ConfigureTun(const char *tunName, const char *ipAddr, int mtu, bool configureRoute, const std::vector<std::string> *dataNetworks = nullptr);
+ 
+ } // namespace nr::ue::tun
+diff -urN UERANSIM-orig/src/ue/tun/tun.cpp UERANSIM/src/ue/tun/tun.cpp
+--- UERANSIM-orig/src/ue/tun/tun.cpp	2023-03-01 07:17:10.884356689 +0000
++++ UERANSIM/src/ue/tun/tun.cpp	2023-03-01 07:49:41.679540040 +0000
+@@ -32,11 +32,11 @@
+     return fd;
+ }
+ 
+-bool TunConfigure(const std::string &tunName, const std::string &ipAddress, int mtu, bool configureRouting, std::string &error)
++bool TunConfigure(const std::string &tunName, const std::string &ipAddress, int mtu, bool configureRouting, std::string &error, const std::vector<std::string> *dataNetworks)
+ {
+     try
+     {
+-        tun::ConfigureTun(tunName.c_str(), ipAddress.c_str(), mtu, configureRouting);
++        tun::ConfigureTun(tunName.c_str(), ipAddress.c_str(), mtu, configureRouting, dataNetworks);
+     }
+     catch (const LibError &e)
+     {
+@@ -47,4 +47,4 @@
+     return true;
+ }
+ 
+-} // namespace nr::ue::tun
+\ No newline at end of file
++} // namespace nr::ue::tun
+diff -urN UERANSIM-orig/src/ue/tun/tun.hpp UERANSIM/src/ue/tun/tun.hpp
+--- UERANSIM-orig/src/ue/tun/tun.hpp	2023-03-01 07:17:10.884356689 +0000
++++ UERANSIM/src/ue/tun/tun.hpp	2023-02-28 16:24:23.000000000 +0000
+@@ -9,11 +9,12 @@
+ #pragma once
+ 
+ #include <string>
++#include <vector>
+ 
+ namespace nr::ue::tun
+ {
+ 
+ int TunAllocate(const char *namePrefix, std::string &allocatedName, std::string &error);
+-bool TunConfigure(const std::string &tunName, const std::string &ipAddress, int mtu, bool configureRouting, std::string &error);
++bool TunConfigure(const std::string &tunName, const std::string &ipAddress, int mtu, bool configureRouting, std::string &error, const std::vector<std::string> * dataNetworks = nullptr);
+ 
+-} // namespace nr::ue::tun
+\ No newline at end of file
++} // namespace nr::ue::tun
+diff -urN UERANSIM-orig/src/ue/types.hpp UERANSIM/src/ue/types.hpp
+--- UERANSIM-orig/src/ue/types.hpp	2023-03-01 07:28:00.772093114 +0000
++++ UERANSIM/src/ue/types.hpp	2023-02-28 16:10:55.000000000 +0000
+@@ -102,6 +102,7 @@
+     std::optional<std::string> imeiSv{};
+     SupportedAlgs supportedAlgs{};
+     std::vector<std::string> gnbSearchList{};
++    std::vector<std::string> dataNetworkList{};
+     std::vector<SessionConfig> defaultSessions{};
+     IntegrityMaxDataRateConfig integrityMaxRate{};
+     NetworkSlice defaultConfiguredNssai{};
+diff -urN UERANSIM-orig/src/ue.cpp UERANSIM/src/ue.cpp
+--- UERANSIM-orig/src/ue.cpp	2023-03-01 07:28:00.768093141 +0000
++++ UERANSIM/src/ue.cpp	2023-02-28 10:21:09.000000000 +0000
+@@ -110,6 +110,9 @@
+     for (auto &gnbSearchItem : yaml::GetSequence(config, "gnbSearchList"))
+         result->gnbSearchList.push_back(gnbSearchItem.as<std::string>());
+ 
++    for (auto &dataNetworkItem : yaml::GetSequence(config, "dataNetworkList"))
++        result->dataNetworkList.push_back(dataNetworkItem.as<std::string>());
++
+     if (yaml::HasField(config, "default-nssai"))
+     {
+         for (auto &sNssai : yaml::GetSequence(config, "default-nssai"))
+@@ -340,6 +343,7 @@
+     c->defaultConfiguredNssai = g_refConfig->defaultConfiguredNssai;
+     c->supportedAlgs = g_refConfig->supportedAlgs;
+     c->gnbSearchList = g_refConfig->gnbSearchList;
++    c->dataNetworkList = g_refConfig->dataNetworkList;
+     c->defaultSessions = g_refConfig->defaultSessions;
+     c->configureRouting = g_refConfig->configureRouting;
+     c->prefixLogger = g_refConfig->prefixLogger;

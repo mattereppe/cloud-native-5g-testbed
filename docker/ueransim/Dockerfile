@@ -1,7 +1,6 @@
 # A container for running the UERANSIM gNodeB/UE simulator.
 # 
-# Copyright (c) 2021, The ASTRID Consortium
-# All rights reserved.
+# Copyright (c) 2023, 
 #
 
 FROM debian:bullseye as sources
@@ -21,21 +20,13 @@ RUN	version=3.20.1 && \
 	cd cmake-$version &&  \
 	./bootstrap && make -j `nproc` && make install && ldconfig 
 # Install UERANSIM from sources
+COPY patches/ueransim-datanetworks-$version.patch /usr/src/
 RUN	cd /usr/src && \
 	git clone https://github.com/aligungr/UERANSIM && \
 	cd UERANSIM && \
 	if [ "$UERANSIM_VERSION" != "latest" ]; then  git checkout $UERANSIM_VERSION ; fi && \
+	patch -p1 ../ueransim-datanetworks-$version.patch
 	make 
-#	mv build/nr-* /usr/local/bin/ && \
-#	mv build/libdevbnd.so /usr/local/lib/ && \
-#	mkdir /etc/ueransim && \
-# Purge unnecessary files
-#	cd /usr/src/cmake-$version && \
-#	make uninstall && \
-#	apt-get -y purge make g++ wget git libssl-dev && \ 
-#	apt-get -y autoremove && \
-#	rm -rf /usr/src/cmake* && \
-#	rm -rf /usr/src/UERANSIM
 
 FROM debian:bullseye
 

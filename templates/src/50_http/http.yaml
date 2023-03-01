@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: http
+  namespace: $K8S_NAMESPACE
+  labels:
+    role: webserver
+spec:
+  selector:
+    role: webserver
+  type: NodePort
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP    
+    targetPort: 80
+    nodePort: 30088
+---
+apiVersion: apps/v1 
+kind: StatefulSet
+metadata:
+  name: http
+  namespace: $K8S_NAMESPACE
+spec:
+  replicas: 1
+  serviceName: "http"
+  selector:
+    matchLabels:
+      role: webserver
+  template:
+    metadata:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: '[
+            {
+             	 "name": "datanetwork1",
+             	 "ips": [ "10.100.0.10/24" ]
+            }
+        ]'
+      labels:
+        role: webserver
+    spec:
+      imagePullSecrets: 						  # This to be removed once the image is public
+        - name: k8s-secret-open5gs
+      initContainers:
+        - name: routeadd
+          image: ghcr.io/mattereppe/open5gs:main
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
+            capabilities:
+              add: ["NET_ADMIN"]
+          command: ["/bin/sh", "-c"]
+          args:
+            - ip route add 10.45.0.0/16 via 10.100.0.100;
+      containers:
+        - name: http
+          image: kennethreitz/httpbin
+          imagePullPolicy: IfNotPresent
+

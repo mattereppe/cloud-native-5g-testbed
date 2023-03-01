@@ -21,6 +21,9 @@ data:
     gnbSearchList:
       - gnb.$K8S_NAMESPACE.svc.$K8S_DOMAIN
     
+    dataNetworkList:
+      - $DATANETWORK1
+
     sessions:
       - type: 'IPv4'
         apn: 'internet'

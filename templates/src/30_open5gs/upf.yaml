@@ -26,12 +26,19 @@ metadata:
     plane: user
 spec:
   replicas: 1
-  serviceName: "upf-svc"
+  serviceName: "upf"
   selector:
     matchLabels:
       epc-role: upf
   template:
     metadata:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: '[
+           { 
+              "name": "datanetwork1",
+              "ips": [ "10.100.0.100/24" ]
+           }
+        ]'
       labels:
         epc-role: upf
     spec:

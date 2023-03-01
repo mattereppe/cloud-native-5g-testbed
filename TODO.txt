@@ -20,3 +20,28 @@ The current configuration requires to export the fs with no_root_squash:
 Secrets
 =======
 Remove any secrets and make the repository public.
+
+Error management
+================
+Add liveness probes to (most of) all 5G components. Not sure this is really necessary, since errors 
+I saw are often due to unrecoverable crashes (e.g., mongodb).
+
+HTTP replicas
+=============
+For now, a single server can run, because there is no simple way to know the IP addresses allocated on the secondary interface to web servers.
+
+Additional routes
+=================
+Adding additional routes via a NetworkAttachmentDefinition configuration requires the container to be started with the NET_CAP. The unpleasant behaviour is that no error is reported, but one started the container's networking does not work. The reason is not clear: the correct table of routes is present, no error in initialization, but the network does not work. Once the capabilities have been added to the container, everything works smoothly.
+
+Network plugins
+===============
+Network plugins accept as input a JSON file that describes the network.  Extra arguments, in the form of key-value string pairs, that are relevant to a specific attachment can be provided during execution, set as the CNI_ARGS parameter.
+Network definition is intended as general configuration for all containers, including external routes, not routes internal to one or more containers.
+
+DNS
+===
+For now, I haven't found any way to register an address in the Kubernetes DNS. It seems there is no specific option apart changing some internal configuration file with all registered entries. This means that addresses assigned my multus cannot be solved to any name right now, if I don't use an external DNS with dynamic capabilities.
+
+
+
