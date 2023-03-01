@@ -6,6 +6,12 @@
 FROM debian:bullseye as sources
 
 # Software version (please note that only a limited number of combinations may be possible
+# ************************************ WARNING ************************************************
+# The project is patched for adding routes to the data networks. The patch for the "latest"
+# version was done on the following commit, and might not work in case of further updates.
+# 1d184a73749634d02f9bc2285fcc0508ff0cbbd9 Tue Oct 25 20:28:52 2022
+# Running a tagged version of the software is the safer option.
+# *********************************************************************************************
 ARG UERANSIM_VERSION="v3.2.6" # "latest" or a valid repository tag
 
 # Install updates and dependencies
@@ -28,11 +34,13 @@ RUN	cd /usr/src && \
 	patch -p1 ../ueransim-datanetworks-$UERANSIM_VERSION.patch && \
 	make 
 
-FROM debian:bullseye
+#FROM debian:bullseye
+#
+## Copy relevant files
+#COPY --from=sources /usr/src/UERANSIM/build/nr-* /usr/local/bin/
+#COPY --from=sources /usr/src/UERANSIM/build/libdevbnd.so /usr/local/lib/
 
-# Copy relevant files
-COPY --from=sources /usr/src/UERANSIM/build/nr-* /usr/local/bin/
-COPY --from=sources /usr/src/UERANSIM/build/libdevbnd.so /usr/local/lib/
+RUN cp build/nr-* /usr/local/bin/ && cp build/libdevbnd.so /usr/local/lib/
 
 RUN mkdir /etc/ueransim
 RUN apt-get update && apt-get -y upgrade && \
