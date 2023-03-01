@@ -40,7 +40,8 @@ RUN	cd /usr/src && \
 #COPY --from=sources /usr/src/UERANSIM/build/nr-* /usr/local/bin/
 #COPY --from=sources /usr/src/UERANSIM/build/libdevbnd.so /usr/local/lib/
 
-RUN cp -a build/nr-* /usr/local/bin/ && cp -a build/libdevbnd.so /usr/local/lib/
+RUN pwd
+RUN cp -a /usr/src/UERANSIM/build/nr-* /usr/local/bin/ && cp -a /usr/src/UERANSIM/build/libdevbnd.so /usr/local/lib/
 
 RUN mkdir /etc/ueransim
 RUN apt-get update && apt-get -y upgrade && \
