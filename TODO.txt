@@ -43,5 +43,3 @@ DNS
 ===
 For now, I haven't found any way to register an address in the Kubernetes DNS. It seems there is no specific option apart changing some internal configuration file with all registered entries. This means that addresses assigned my multus cannot be solved to any name right now, if I don't use an external DNS with dynamic capabilities.
 
-
-

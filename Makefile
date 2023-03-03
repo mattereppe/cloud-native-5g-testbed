@@ -15,11 +15,16 @@ export
 # additional variables that will be replaced at deployment time.
 ENV_VARS := $(shell grep -v '^\#' $(CONFIG_DIR)/$(ENV_FILE) | sed -e 's/\(.*\)/$$\1/' | cut -d '=' -f1 | xargs )
 
+# Automatically derive prefix from the network address
+PREFIX := $(shell echo $(DATANETWORK1) | cut -d "/" -f2)
+UPFADDR := $(UEGW)/$(PREFIX)
+ENV_VARS += $$UPFADDR
+
 # Dependencies
 TEMPLATE := $(wildcard $(TEMPLATE_DIR)/*/*/*.yaml) 
 DEPLOY := $(subst $(TEMPLATE_DIR),$(DEPLOY_DIR),$(TEMPLATE))
 
-.PHONY: all clean help config
+.PHONY: all clean help config 
 
 all: $(K8S_DEPLOY_FILE) config
 

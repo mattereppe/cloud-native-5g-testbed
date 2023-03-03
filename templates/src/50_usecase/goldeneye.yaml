@@ -1,0 +1,58 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: goldeneye
+  labels: 
+    ddos: goldeneye
+  namespace: $K8S_NAMESPACE
+spec:
+  template:
+    spec:
+      hostname: goldeneye
+      containers:
+        - name: goldeneye
+          image: ghcr.io/mattereppe/goldeneye:main
+          imagePullPolicy: Always
+          env:
+            - name: WORKERS
+              value: "$GOLDENEYE_WORKERS"
+            - name: SOCKETS
+              value: "$GOLDENEYE_SOCKETS"
+            - name: METHOD
+              value: "$GOLDENEYE_METHOD"
+            - name: URL
+              value: "$GOLDENEYE_URL"
+        - name: ue
+          image: ghcr.io/mattereppe/ueransim:main
+          securityContext:
+            privileged: true
+            capabilities:
+              add: ["NET_ADMIN"]
+          imagePullPolicy: Always
+          command: ["nr-ue", "-c", "/etc/ueransim/ue.yaml"]
+          volumeMounts:
+          - name: ue-configmap-volume
+            mountPath: /etc/ueransim/
+          - name: dev-net-tun
+            mountPath: /dev/net/tun
+          livenessProbe:
+            exec:
+              command:
+              - ip
+              - a 
+              - show
+              - dev
+              - uesimtun0
+            initialDelaySeconds: 10
+            periodSeconds: 30
+      restartPolicy: Always
+      imagePullSecrets: 						  # This to be removed once the image is public
+        - name: k8s-secret-open5gs
+      volumes:
+        - name: ue-configmap-volume
+          configMap:
+            name: ueransim-ue-config
+        - name: dev-net-tun
+          hostPath:
+            path: /dev/net/tun
+      restartPolicy: OnFailure
