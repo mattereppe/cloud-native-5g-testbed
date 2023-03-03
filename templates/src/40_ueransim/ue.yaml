@@ -1,21 +1,5 @@
-# Service is not necessary, until there is no way to attach an external pod with a traffic generator
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  name: gnb
-#  namespace: $K8S_NAMESPACE
-#  labels:
-#    ran-role: gnodeb
-#spec:
-#  ports:
-#  - name: rls      # Radio Link Simulator (UERANSIM-specific)
-#    port: 4997
-#    protocol: UDP    
-#  selector:
-#    ran-role: gnodeb    
-#---
 apiVersion: apps/v1 
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: ue
   namespace: $K8S_NAMESPACE
@@ -31,6 +15,25 @@ spec:
       labels:
         ran-role: ue
     spec:
+      initContainers:
+        - name: replace-env-variables
+          image: bhgedigital/envsubst
+          command: ["/bin/sh","-c"]
+          args:
+          - export UEID=`echo $PODNAME |  sed -E "s/.*-([[:digit:]]{1,2})/\1/"`;
+            UEID=$(( UEID + 1 ));
+            if [ ${#UEID} -eq 1 ]; then echo UEID="0${UEID}"; fi;
+            cat /tmp/ue.yaml | envsubst > /etc/ueransim/ue.yaml;
+          volumeMounts:
+          - name: ue-configmap-volume
+            mountPath: /tmp/
+          - name: ue-data-volume
+            mountPath: /etc/ueransim
+          env:
+            - name: PODNAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
       containers:
         - name: ue
           image: ghcr.io/mattereppe/ueransim:main
@@ -40,21 +43,22 @@ spec:
               add: ["NET_ADMIN"]
           imagePullPolicy: Always
           command: ["nr-ue", "-c", "/etc/ueransim/ue.yaml"]
+          command: ["/bin/bash","-c","sleep 36000"]
           volumeMounts:
           - name: ue-configmap-volume
             mountPath: /etc/ueransim/
           - name: dev-net-tun
             mountPath: /dev/net/tun
-          livenessProbe:
-            exec:
-              command:
-              - ip
-              - a 
-              - show
-              - dev
-              - uesimtun0
-            initialDelaySeconds: 10
-            periodSeconds: 30
+#          livenessProbe:
+#            exec:
+#              command:
+#              - ip
+#              - a 
+#              - show
+#              - dev
+#              - uesimtun0
+#            initialDelaySeconds: 10
+#            periodSeconds: 30
       restartPolicy: Always
       imagePullSecrets: 						  # This to be removed once the image is public
         - name: k8s-secret-open5gs
@@ -62,6 +66,8 @@ spec:
         - name: ue-configmap-volume
           configMap:
             name: ueransim-ue-config
+        - name: ue-data-volume
+          emptyDir: {}
         - name: dev-net-tun
           hostPath:
             path: /dev/net/tun

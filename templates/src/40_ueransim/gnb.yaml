@@ -22,7 +22,7 @@ metadata:
     segment: ran
 spec:
   replicas: 1
-  serviceName: "gnb-svc"
+  serviceName: "gnb"
   selector:
     matchLabels:
       ran-role: gnodeb
