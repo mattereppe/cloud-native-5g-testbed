@@ -13,12 +13,15 @@ include  $(CONFIG_DIR)/$(ENV_FILE)
 export
 # Note: it is necessary to explicitly list all variables to be replaced, because there are
 # additional variables that will be replaced at deployment time.
-ENV_VARS := $(shell grep -v '^\#' $(CONFIG_DIR)/$(ENV_FILE) | sed -e 's/\(.*\)/$$\1/' | cut -d '=' -f1 | xargs )
+ENV_VARS := $(shell grep  '^[A-Za-z]' $(CONFIG_DIR)/$(ENV_FILE) | sed -e 's/\(.*\)/$$\1/' | cut -d '=' -f1 | xargs )
+IPADDRS := $(shell grep '^ADDR' $(CONFIG_DIR)/$(ENV_FILE) | cut -d '=' -f1 )
 
-# Automatically derive prefix from the network address
+# Automatically derive prefix from the network addresses and build corresponding 
+# variables named NET<orig variable name>
 PREFIX := $(shell echo $(DATANETWORK1) | cut -d "/" -f2)
 UPFADDR := $(UEGW)/$(PREFIX)
-ENV_VARS += $$UPFADDR
+$(foreach address,$(IPADDRS), $(eval NET$(address) := $($(address))/$(PREFIX)) )
+$(foreach address,$(IPADDRS), $(eval ENV_VARS += $$$$NET$(address) ) )
 
 # Dependencies
 TEMPLATE := $(wildcard $(TEMPLATE_DIR)/*/*/*.yaml) 
@@ -66,3 +69,6 @@ run: $(K8S_DEPLOY_FILE)
 
 delete: $(K8S_DEPLOY_FILE)
 	kubectl delete -f $<
+
+make addr:
+	@echo $$ENV_VARS

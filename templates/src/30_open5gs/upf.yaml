@@ -36,7 +36,7 @@ spec:
         k8s.v1.cni.cncf.io/networks: '[
            { 
               "name": "datanetwork1",
-              "ips": [ "$UPFADDR" ]
+              "ips": [ "$NETADDR_UEGW" ]
            }
         ]'
       labels:

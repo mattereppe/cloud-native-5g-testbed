@@ -33,7 +33,7 @@ spec:
         k8s.v1.cni.cncf.io/networks: '[
             {
              	 "name": "datanetwork1",
-             	 "ips": [ "$VICTIM" ]
+             	 "ips": [ "$NETADDR_VICTIM" ]
             }
         ]'
       labels:
@@ -51,7 +51,7 @@ spec:
               add: ["NET_ADMIN"]
           command: ["/bin/sh", "-c"]
           args:
-            - ip route add 10.45.0.0/16 via $UEGW;
+            - ip route add 10.45.0.0/16 via $ADDR_UEGW;
       containers:
         - name: http
           image: kennethreitz/httpbin
