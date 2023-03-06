@@ -12,6 +12,12 @@ data:
 
     db_uri: mongodb://mongodb.$K8S_NAMESPACE.svc.$K8S_DOMAIN/open5gs
     
+    sbi:
+        server:
+          no_tls: true
+        client:
+          no_tls: true
+
     bsf:
         sbi:
           - addr: $BSF_POD_IP

@@ -10,6 +10,12 @@ data:
     logger:
         file: /var/log/open5gs/smf.log
 
+    sbi:
+        server:
+          no_tls: true
+        client:
+          no_tls: true
+
     smf:
         sbi:
           - addr: $SMF_POD_IP

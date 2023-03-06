@@ -9,6 +9,11 @@ data:
   ausf.yaml: |
     logger:
         file: /var/log/open5gs/ausf.log
+    sbi:
+        server:
+          no_tls: true
+        client:
+          no_tls: true
     ausf:
         sbi:
           - addr: $AUSF_POD_IP

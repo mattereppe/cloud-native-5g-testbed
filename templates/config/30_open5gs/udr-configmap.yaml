@@ -14,6 +14,13 @@ data:
     
     logger:
         file: /var/log/open5gs/udr.log
+
+    sbi:
+        server:
+          no_tls: true
+        client:
+          no_tls: true
+
     udr:
         sbi:
           - addr: $UDR_POD_IP
