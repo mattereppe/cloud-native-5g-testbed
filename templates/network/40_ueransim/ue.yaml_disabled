@@ -6,7 +6,7 @@ metadata:
   labels:
     segment: ran
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       ran-role: ue
@@ -20,10 +20,10 @@ spec:
           image: bhgedigital/envsubst
           command: ["/bin/sh","-c"]
           args:
-          - export UEID=`echo $PODNAME |  sed -E "s/.*-([[:digit:]]{1,2})/\1/"`;
+          - 'export UEID=`echo $PODNAME |  sed -E "s/.*-([[:digit:]]{1,2})/\1/"`;
             UEID=$(( UEID + 1 ));
-            if [ ${#UEID} -eq 1 ]; then echo UEID="0${UEID}"; fi;
-            cat /tmp/ue.yaml | envsubst > /etc/ueransim/ue.yaml;
+            if [ ${#UEID} -eq 1 ]; then UEID="0${UEID}"; fi;
+            cat /tmp/ue.yaml | envsubst > /etc/ueransim/ue.yaml;'
           volumeMounts:
           - name: ue-configmap-volume
             mountPath: /tmp/
@@ -43,22 +43,22 @@ spec:
               add: ["NET_ADMIN"]
           imagePullPolicy: Always
           command: ["nr-ue", "-c", "/etc/ueransim/ue.yaml"]
-          command: ["/bin/bash","-c","sleep 36000"]
+#          command: ["/bin/bash","-c","sleep 36000"]
           volumeMounts:
-          - name: ue-configmap-volume
+          - name: ue-data-volume
             mountPath: /etc/ueransim/
           - name: dev-net-tun
             mountPath: /dev/net/tun
-#          livenessProbe:
-#            exec:
-#              command:
-#              - ip
-#              - a 
-#              - show
-#              - dev
-#              - uesimtun0
-#            initialDelaySeconds: 10
-#            periodSeconds: 30
+          livenessProbe:
+            exec:
+              command:
+              - ip
+              - a 
+              - show
+              - dev
+              - uesimtun0
+            initialDelaySeconds: 10
+            periodSeconds: 30
       restartPolicy: Always
       imagePullSecrets: 						  # This to be removed once the image is public
         - name: k8s-secret-open5gs

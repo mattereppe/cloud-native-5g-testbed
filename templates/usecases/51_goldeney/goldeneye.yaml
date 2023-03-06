@@ -1,14 +1,39 @@
-apiVersion: batch/v1
-kind: Job
+apiVersion: apps/v1
+kind: StatefulSet
 metadata:
   name: goldeneye
   labels: 
     ddos: goldeneye
   namespace: $K8S_NAMESPACE
 spec:
+  replicas: $DDOS_REPLICAS
+  selector:
+    matchLabels:
+      ddos: goldeneye
   template:
+    metadata:
+      labels:
+        ddos: goldeneye
     spec:
-      hostname: goldeneye
+      initContainers:
+        - name: replace-env-variables
+          image: bhgedigital/envsubst
+          command: ["/bin/sh","-c"]
+          args:
+          - 'export UEID=`echo $PODNAME |  sed -E "s/.*-([[:digit:]]{1,2})/\1/"`;
+            UEID=$(( UEID + 1 ));
+            if [ ${#UEID} -eq 1 ]; then UEID="0${UEID}"; fi;
+            cat /tmp/ue.yaml | envsubst > /etc/ueransim/ue.yaml;'
+          volumeMounts:
+          - name: ue-configmap-volume
+            mountPath: /tmp/
+          - name: ue-data-volume
+            mountPath: /etc/ueransim
+          env:
+            - name: PODNAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
       containers:
         - name: goldeneye
           image: ghcr.io/mattereppe/goldeneye:main
@@ -31,7 +56,7 @@ spec:
           imagePullPolicy: Always
           command: ["nr-ue", "-c", "/etc/ueransim/ue.yaml"]
           volumeMounts:
-          - name: ue-configmap-volume
+          - name: ue-data-volume
             mountPath: /etc/ueransim/
           - name: dev-net-tun
             mountPath: /dev/net/tun
@@ -52,7 +77,9 @@ spec:
         - name: ue-configmap-volume
           configMap:
             name: ueransim-ue-config
+        - name: ue-data-volume
+          emptyDir: {}
         - name: dev-net-tun
           hostPath:
             path: /dev/net/tun
-      restartPolicy: OnFailure
+      restartPolicy: Always
