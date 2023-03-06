@@ -25,7 +25,10 @@ RUN apt-get update; apt-get install -y wget gpg && \
 		apt-get update && \
 		apt-get -y install mongodb-org  
 
-COPY mongo-init /tmp/mongo-init
+# Database with 1 subscriber
+#COPY mongo-init-1sub /tmp/mongo-init
+# Database with 99 subscribers
+COPY mongo-init-99subs /tmp/mongo-init
 
 RUN echo "Europe/Rome" > /etc/timezone
 

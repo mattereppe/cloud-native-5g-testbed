@@ -1,0 +1,50 @@
+db.subscribers.insertMany( [
+   { 
+       "imsi" : "00101_UEID_", 
+       "subscribed_rau_tau_timer" : NumberInt(12), 
+       "network_access_mode" : NumberInt(0), 
+       "subscriber_status" : NumberInt(0), 
+       "access_restriction_data" : NumberInt(32), 
+       "slice" : 
+       [{ 
+           "sst" : NumberInt(1), 
+           "default_indicator" : true, 
+           "_id" : new ObjectId(), 
+           "session" : 
+           [{ 
+               "name" : "internet", 
+               "type" : NumberInt(3), 
+               "_id" : new ObjectId(), 
+               "pcc_rule" : [], 
+               "ambr" : 
+               { 
+                   "uplink" : { "value": NumberInt(1), "unit" : NumberInt(3) }, 
+                   "downlink" : { "value": NumberInt(1), "unit" : NumberInt(3) }, 
+               }, 
+               "qos" : 
+               { 
+                   "index" : NumberInt(9), 
+                   "arp" : 
+                   { 
+                       "priority_level" : NumberInt(8), 
+                       "pre_emption_capability" : NumberInt(1), 
+                       "pre_emption_vulnerability" : NumberInt(1), 
+                   }, 
+               }, 
+           }], 
+       }], 
+       "ambr" : 
+       { 
+           "uplink" : { "value": NumberInt(1), "unit" : NumberInt(3),}, 
+           "downlink" : { "value": NumberInt(1), "unit" : NumberInt(3) }, 
+       },  
+       "security" : 
+       { 
+           "k" : "465B5CE8B199B49FAA5F0A2EE238A6BC", 
+           "amf" : "8000", 
+           "op" : null, 
+           "opc" : "E8ED289DEBA952E4283B54E88E6183CA" 
+       }, 
+       "__v" : 0
+   }
+] )
