@@ -12,8 +12,6 @@ ARG DEBIAN_FRONTEND=noninteractive
 ARG KEY_REP=/usr/share/keyrings/
 
 # Software version (please note that only a limited number of combinations may be possible
-#ARG OPEN5GS_VERSION="v2.2.8" # "latest" or a valid repository tag
-#ARG OPEN5GS_VERSION="v2.4.14" 
 ARG OPEN5GS_VERSION="v2.6.0" 
 
 # Install build environment
