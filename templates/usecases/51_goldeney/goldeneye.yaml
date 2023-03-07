@@ -21,8 +21,7 @@ spec:
           command: ["/bin/sh","-c"]
           args:
           - 'export UEID=`echo $PODNAME |  sed -E "s/.*-([[:digit:]]{1,2})/\1/"`;
-            UEID=$(( UEID + 1 ));
-            if [ ${#UEID} -eq 1 ]; then UEID="0${UEID}"; fi;
+            UEID=$(( UEID + 1000000001 ));
             cat /tmp/ue.yaml | envsubst > /etc/ueransim/ue.yaml;'
           volumeMounts:
           - name: ue-configmap-volume
