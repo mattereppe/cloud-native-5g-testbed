@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: curl-client-config
+  namespace: $K8S_NAMESPACE
+  labels: 
+    ddos: goldeneye
+data:
+  urls.txt: |
+    -X GET http://$ADDR_VICTIM/ip
+    -X GET http://$ADDR_VICTIM/uuid
+    -X GET http://$ADDR_VICTIM/user-agent
+    -X GET http://$ADDR_VICTIM/headers
+    -X GET http://$ADDR_VICTIM/get
+    -X GET http://$ADDR_VICTIM/anything
+    -X GET http://$ADDR_VICTIM/base64/aGVsbG8gd29ybGQNCg%3D%3D
+    -X GET http://$ADDR_VICTIM/encoding/utf8
+    -X GET http://$ADDR_VICTIM/gzip
+    -X GET http://$ADDR_VICTIM/deflate
+    -X GET http://$ADDR_VICTIM/brotli
+    -X GET http://$ADDR_VICTIM/status/418
+    -X GET http://$ADDR_VICTIM/response-headers?Content-Type=text%2Fplain%3B+charset%3DUTF-8&amp;Server=httpbin
+    -X GET http://$ADDR_VICTIM/redirect/6
+    -X GET http://$ADDR_VICTIM/redirect-to?url=http%3A%2F%2Fexample.com%2F
+    -X GET http://$ADDR_VICTIM/redirect-to?url=http%3A%2F%2Fexample.com%2F&amp;status_code=307
+    -X GET http://$ADDR_VICTIM/relative-redirect/6
+    -X GET http://$ADDR_VICTIM/absolute-redirect/6
+    -X GET http://$ADDR_VICTIM/cookies
+    -X GET http://$ADDR_VICTIM/cookies/set?k1=v1&amp;k2=v2
+    -X GET http://$ADDR_VICTIM/cookies/delete?k1=&amp;k2=
+    -X GET http://$ADDR_VICTIM/basic-auth/user/passwd
+    -X GET http://$ADDR_VICTIM/hidden-basic-auth/user/passwd
+    -X GET http://$ADDR_VICTIM/digest-auth/auth/user/passwd/MD5/never
+    -X GET http://$ADDR_VICTIM/digest-auth/auth/user/passwd/MD5/never
+    -X GET http://$ADDR_VICTIM/stream/20
+    -X GET http://$ADDR_VICTIM/delay/3
+    -X GET http://$ADDR_VICTIM/drip?numbytes=5&amp;duration=5&amp;code=200
+    -X GET http://$ADDR_VICTIM/range/1024
+    -X GET http://$ADDR_VICTIM/html
+    -X GET http://$ADDR_VICTIM/robots.txt
+    -X GET http://$ADDR_VICTIM/deny
+    -X GET http://$ADDR_VICTIM/cache
+    -X GET http://$ADDR_VICTIM/etag/etag
+    -X GET http://$ADDR_VICTIM/cache/60
+    -X GET http://$ADDR_VICTIM/bytes/1024
+    -X GET http://$ADDR_VICTIM/stream-bytes/1024
+    -X GET http://$ADDR_VICTIM/links/10
+    -X GET http://$ADDR_VICTIM/image
+    -X GET http://$ADDR_VICTIM/image/png
+    -X GET http://$ADDR_VICTIM/image/jpeg
+    -X GET http://$ADDR_VICTIM/image/webp
+    -X GET http://$ADDR_VICTIM/image/svg
+    -X GET http://$ADDR_VICTIM/forms/post
+    -X GET http://$ADDR_VICTIM/xml
+    -X POST http://$ADDR_VICTIM/post
+    -X PATCH http://$ADDR_VICTIM/patch
+    -X PUT http://$ADDR_VICTIM/put
+    -X DELETE http://$ADDR_VICTIM/delete

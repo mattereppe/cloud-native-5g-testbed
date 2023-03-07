@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: curl-client
+  labels: 
+    ddos: goldeneye
+  namespace: $K8S_NAMESPACE
+spec:
+  replicas: $CURL_REPLICAS
+  selector:
+    matchLabels:
+      ddos: curlclient
+  template:
+    metadata:
+      labels:
+        ddos: curlclient
+    spec:
+      initContainers:
+        - name: replace-env-variables
+          image: bhgedigital/envsubst
+          command: ["/bin/sh","-c"]
+          args:
+          - 'export UEID=`echo $PODNAME |  sed -E "s/.*-([[:digit:]]{1,2})/\1/"`;
+            UEID=$(( UEID + 1 ));
+            if [ ${#UEID} -eq 1 ]; then UEID="0${UEID}"; fi;
+            cat /tmp/ue.yaml | envsubst > /etc/ueransim/ue.yaml;'
+          volumeMounts:
+          - name: ue-configmap-volume
+            mountPath: /tmp/
+          - name: ue-data-volume
+            mountPath: /etc/ueransim
+          env:
+            - name: PODNAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+      containers:
+        - name: curl
+          image: ghcr.io/mattereppe/curl:main
+          imagePullPolicy: Always
+          volumeMounts:
+          - name: curl-configmap-volume
+            mountPath: /etc/curl/
+          securityContext:
+            runAsUser: 0
+          command: ["/bin/bash","-c"]
+          args:
+          - 'while true; do 
+               while read url; do
+                 echo $url; 
+                 curl -b cookie -c cookie -o /dev/null --connect-timeout $CURL_TIMEOUT -s -S  -L $url; 
+                 sleep $CURL_DELAY; 
+               done < <(sort -R /etc/curl/urls.txt);
+             done;'
+        - name: ue
+          image: ghcr.io/mattereppe/ueransim:main
+          securityContext:
+            privileged: true
+            capabilities:
+              add: ["NET_ADMIN"]
+          imagePullPolicy: Always
+          command: ["nr-ue", "-c", "/etc/ueransim/ue.yaml"]
+          volumeMounts:
+          - name: ue-data-volume
+            mountPath: /etc/ueransim/
+          - name: dev-net-tun
+            mountPath: /dev/net/tun
+          livenessProbe:
+            exec:
+              command:
+              - ip
+              - a 
+              - show
+              - dev
+              - uesimtun0
+            initialDelaySeconds: 10
+            periodSeconds: 30
+      restartPolicy: Always
+      imagePullSecrets: 						  # This to be removed once the image is public
+        - name: k8s-secret-open5gs
+      volumes:
+        - name: ue-configmap-volume
+          configMap:
+            name: ueransim-ue-config
+        - name: ue-data-volume
+          emptyDir: {}
+        - name: dev-net-tun
+          hostPath:
+            path: /dev/net/tun
+        - name: curl-configmap-volume
+          configMap:
+            name: curl-client-config
+      restartPolicy: Always
