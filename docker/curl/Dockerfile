@@ -9,6 +9,7 @@ From curlimages/curl:latest
 USER root
 
 RUN apk update && apk upgrade && apk add bash coreutils
+ENV TZ="Europe/Rome"
 
 # Switch back to the non-privileged user
 USER curl_user

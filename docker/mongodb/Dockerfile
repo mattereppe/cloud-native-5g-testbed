@@ -28,9 +28,11 @@ RUN apt-get update; apt-get install -y wget gpg && \
 # Database with 1 subscriber
 #COPY mongo-init-1sub /tmp/mongo-init
 # Database with 99 subscribers
-COPY mongo-init-99subs /tmp/mongo-init
+#COPY mongo-init-99subs /tmp/mongo-init
+# Database with 200 subscribers, 100 in the "0000000xxx" range, and 100 in the "1000000xxx" range
+COPY mongo-init-200subs /tmp/mongo-init
 
-RUN echo "Europe/Rome" > /etc/timezone
+ENV TZ="Europe/Rome" 
 
 # This part installs testing tools and could be safely removed for "production" releases
 RUN apt-get -y install iproute2 tcpdump iputils-ping dnsutils vim procps net-tools
