@@ -48,7 +48,7 @@ spec:
                   fieldPath: status.podIP
       containers:
         - name: ausf
-          image: ghcr.io/mattereppe/open5gs:main
+          image: ghcr.io/mattereppe/open5gs:$CN5T_RELEASE
           imagePullPolicy: Always
           command: ["open5gs-ausfd", "-c", "/etc/open5gs/ausf.yaml"]
           volumeMounts:

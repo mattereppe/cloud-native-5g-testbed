@@ -47,7 +47,7 @@ spec:
                   fieldPath: status.podIP
       containers:
         - name: gnb
-          image: ghcr.io/mattereppe/ueransim:main
+          image: ghcr.io/mattereppe/ueransim:$CN5T_RELEASE
           imagePullPolicy: Always
           command: ["nr-gnb", "-c", "/etc/ueransim/gnb.yaml"]
 # command: ["/bin/bash","-c","sleep 3660"]

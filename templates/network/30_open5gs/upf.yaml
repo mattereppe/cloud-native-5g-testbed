@@ -58,7 +58,7 @@ spec:
                   fieldPath: status.podIP
       containers:
         - name: upf
-          image: ghcr.io/mattereppe/open5gs:main
+          image: ghcr.io/mattereppe/open5gs:$CN5T_RELEASE
           securityContext:
             privileged: true
             capabilities:

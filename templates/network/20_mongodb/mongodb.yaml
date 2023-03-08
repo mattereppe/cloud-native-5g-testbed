@@ -57,7 +57,7 @@ spec:
             name: open5gs-mongodb-config
       initContainers:
         - name: init-mongodb
-          image: ghcr.io/mattereppe/mongodb:main
+          image: ghcr.io/mattereppe/mongodb:$CN5T_RELEASE
           imagePullPolicy: Always
           volumeMounts:
           - name: pv-mongodb
@@ -77,7 +77,7 @@ spec:
               fi;
       containers:
         - name: mongodb
-          image: ghcr.io/mattereppe/mongodb:main
+          image: ghcr.io/mattereppe/mongodb:$CN5T_RELEASE
           imagePullPolicy: Always
           command: 
             - mongod

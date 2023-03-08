@@ -5,8 +5,8 @@
 DEPLOY_DIR := deploy
 CONFIG_DIR := config
 TEMPLATE_DIR := templates
-K8S_DEPLOY_FILE := $(DEPLOY_DIR)/open5gs.yaml
-ENV_FILE := open5gs.env
+K8S_DEPLOY_FILE := $(DEPLOY_DIR)/cn5t.yaml
+ENV_FILE := cn5t.env
 
 # Load the configuration file as environment variables
 include  $(CONFIG_DIR)/$(ENV_FILE)

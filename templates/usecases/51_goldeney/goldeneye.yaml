@@ -35,7 +35,7 @@ spec:
                   fieldPath: metadata.name
       containers:
         - name: goldeneye
-          image: ghcr.io/mattereppe/goldeneye:main
+          image: ghcr.io/mattereppe/goldeneye:$CN5T_RELEASE
           imagePullPolicy: Always
           env:
             - name: WORKERS
@@ -47,7 +47,7 @@ spec:
             - name: URL
               value: "$GOLDENEYE_URL"
         - name: ue
-          image: ghcr.io/mattereppe/ueransim:main
+          image: ghcr.io/mattereppe/ueransim:$CN5T_RELEASE
           securityContext:
             privileged: true
             capabilities:
