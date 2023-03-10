@@ -61,3 +61,22 @@ Repository:
 
 License:
 - https://curl.se/docs/copyright.html
+
+# Httpbin
+
+Image:
+- kennethreitz/httpbin
+
+Repository:
+- https://hub.docker.com/r/kennethreitz/httpbin/
+
+License:
+- Internet Systems Consortium (ISC) 
+
+# Envsubst
+
+Image:
+- bhgedigital/envsubst
+
+Repository:
+- https://hub.docker.com/r/bhgedigital/envsubst

@@ -1,3 +1,30 @@
+#
+# Copyright (C) 2023 Matteo Repetto <mattereppe@gmail.com>
+#
+# This file is part of the Cloud Native 5G Testbed.
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see:
+#
+#         https://www.gnu.org/licenses/gpl-3.0.html
+#
+# This program is provided "as is", WITHOUT ANY WARRANTY; without even the implied 
+# warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. In no event shall
+# the authors or copyright holders be liable for any claim, damages or other liability.
+# See the License for the specific language governing permissions and limitations
+# under the License.
+# 
+
+#
+# This path sets up a route towards a given destination network on the tunnel
+# provided by the UERANSIM gNodeB/UE simulator.
+# Source code of UERANSIM available at: https://github.com/aligungr/UERANSIM
+# 
+
 diff -urN UERANSIM-orig/src/ue/app/task.cpp UERANSIM/src/ue/app/task.cpp
 --- UERANSIM-orig/src/ue/app/task.cpp	2023-03-01 09:02:51.094274611 +0000
 +++ UERANSIM/src/ue/app/task.cpp	2023-03-01 08:45:23.197292724 +0000
