@@ -57,21 +57,9 @@ RUN cd /usr/src && \
 		cp -r install/var/* /var/ && \
 		cp -r install/etc/* /etc/
 	
-FROM debian:bullseye
-
-RUN if ! [ -d /usr/share/doc/open5gs ]; then mkdir -p /usr/share/doc/open5gs; fi
-
-COPY --from=sources /usr/src/open5gs/install/bin/* /usr/local/bin/
-COPY --from=sources /usr/src/open5gs/install/lib/* /lib/
-COPY --from=sources /usr/src/open5gs/install/var/* /var/
-COPY --from=sources /usr/src/open5gs/install/etc/* /etc/
-COPY --from=sources /usr/src/open5gs/debian/copyright /usr/share/doc/open5gs/
-
 ENV TZ="Europe/Rome"
 
-RUN apt-get update && \
-		apt-get -y install libtalloc-dev && \
 # This part installs testing tools and could be safely removed for "production" releases
-		apt-get -y install iproute2 tcpdump iputils-ping dnsutils vim procps net-tools
+RUN		apt-get -y install iproute2 tcpdump iputils-ping dnsutils vim procps net-tools
  
 WORKDIR /
