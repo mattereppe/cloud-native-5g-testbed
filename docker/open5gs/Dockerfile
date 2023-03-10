@@ -12,7 +12,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 ARG KEY_REP=/usr/share/keyrings/
 
 # Software version (please note that only a limited number of combinations may be possible
-ARG OPEN5GS_VERSION="v2.6.0" 
+ARG OPEN5GS_VERSION="v2.6.1" 
 
 # Install build environment
 RUN apt-get update && \
@@ -32,6 +32,16 @@ RUN cd /usr/src && \
 		cp -r install/lib/* /lib/ && \
 		cp -r install/var/* /var/ && \
 		cp -r install/etc/* /etc/
+	
+FROM debian:bullseye
+
+RUN if ! [ -d /usr/share/doc/open5gs ]; then mkdir -p /usr/share/doc/open5gs
+
+COPY --from=sources /usr/src/open5gs/install/bin/* /usr/local/bin/
+COPY --from=sources /usr/src/open5gs/install/lib/* /lib/
+COPY --from=sources /usr/src/open5gs/install/var/* /var/
+COPY --from=sources /usr/src/open5gs/install/etc/* /etc/
+COPY --from=sources /usr/src/open5gs/debian/copyright /usr/share/doc/open5gs/
 
 ENV TZ="Europe/Rome"
 
