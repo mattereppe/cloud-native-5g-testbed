@@ -1,6 +1,6 @@
 # A container for running Open5Gs 
 # 
-# Binaries are taken from official software repositories.
+# Binaries are taken from official software repositories. 
 #
 
 FROM debian:bullseye
