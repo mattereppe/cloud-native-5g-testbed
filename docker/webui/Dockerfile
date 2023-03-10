@@ -46,25 +46,25 @@ RUN apt-get update; apt-get install -y wget curl git && \
 # Install Open5Gs WebUI
 	cd /usr/src/ && \
 	if [ "$OPEN5GS_VERSION" = "git" ]; then \
-	  mkdir ./open5gs-$OPEN5GS_VERSION; \
-	  cd /open5gs-$OPEN5GS_VERSION; \
+	  mkdir ./open5gs; \
+	  cd /open5gs; \
 	  git clone https://github.com/open5gs/open5gs.git . ;	\
 	else \
 		wget -qO- /dev/null "https://github.com/open5gs/open5gs/archive/v${OPEN5GS_VERSION}.tar.gz" | tar zxf - ; \
 	fi && \
-	cd /usr/src/open5gs-$OPEN5GS_VERSION/webui/ && \
+	cd /usr/src/open5gs/webui/ && \
 	npm ci --no-optional && npm run build 
 #	&& \
 #	if [ ! -d /usr/lib/node_modules ]; then mkdir /usr/lib/node_modules; fi && \
 #	if [ -d /usr/lib/node_modules/open5gs ]; then rm -rf /usr/lib/node_modules/open5gs; fi && \
-#	mv /usr/src/open5gs-$OPEN5GS_VERSION/webui /usr/lib/node_modules/open5gs && \
-#	rm -rf /usr/src/open5gs-$OPEN5GS_VERSION
+#	mv /usr/src/open5gs/webui /usr/lib/node_modules/open5gs && \
+#	rm -rf /usr/src/open5gs
 
 FROM debian:bullseye
 
 RUN if [ ! -d /usr/lib/node_modules ]; then mkdir /usr/lib/node_modules; fi 
 
-COPY --from=sources /usr/src/open5gs-$OPEN5GS_VERSION/webui /usr/lib/node_modules/open5gs
+COPY --from=sources /usr/src/open5gs/webui /usr/lib/node_modules/open5gs
 
 RUN apt-get update
 # This part installs testing tools and could be safely removed for "production" releases
