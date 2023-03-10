@@ -54,8 +54,7 @@ RUN apt-get update; apt-get install -y wget curl git && \
 		mv open5gs-$OPEN5GS_VERSION open5gs; \
 	fi && \
 	cd /usr/src/open5gs/webui/ && \
-	npm ci --no-optional && npm run build 
-	&& \
+	npm ci --no-optional && npm run build  && \
 	if [ ! -d /usr/lib/node_modules ]; then mkdir /usr/lib/node_modules; fi && \
 	if [ -d /usr/lib/node_modules/open5gs ]; then rm -rf /usr/lib/node_modules/open5gs; fi && \
 	mv /usr/src/open5gs/webui /usr/lib/node_modules/open5gs && \
