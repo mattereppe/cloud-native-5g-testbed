@@ -27,7 +27,7 @@
 # included software (/usr/share/doc/*/copyright).
 #
 
-FROM debian:bullseye
+FROM debian:bullseye as sources
 
 # Disable interactive mode for apt
 ARG DEBIAN_FRONTEND=noninteractive
@@ -35,7 +35,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 # Software version. Can be "git" (for the latest version) or "x.y.z" for an archived version.
 #ARG OPEN5GS_VERSION="2.4.14"
 #ARG NODEJS_VERSION="17"
-ARG OPEN5GS_VERSION="2.6.0"
+ARG OPEN5GS_VERSION="2.6.1"
 ARG NODEJS_VERSION="19"
 
 # Update and install preliminary dependencies
@@ -53,12 +53,20 @@ RUN apt-get update; apt-get install -y wget curl git && \
 		wget -qO- /dev/null "https://github.com/open5gs/open5gs/archive/v${OPEN5GS_VERSION}.tar.gz" | tar zxf - ; \
 	fi && \
 	cd /usr/src/open5gs-$OPEN5GS_VERSION/webui/ && \
-	npm ci --no-optional && npm run build && \
-	if [ ! -d /usr/lib/node_modules ]; then mkdir /usr/lib/node_modules; fi && \
-	if [ -d /usr/lib/node_modules/open5gs ]; then rm -rf /usr/lib/node_modules/open5gs; fi && \
-	mv /usr/src/open5gs-$OPEN5GS_VERSION/webui /usr/lib/node_modules/open5gs && \
-	rm -rf /usr/src/open5gs-$OPEN5GS_VERSION
+	npm ci --no-optional && npm run build 
+#	&& \
+#	if [ ! -d /usr/lib/node_modules ]; then mkdir /usr/lib/node_modules; fi && \
+#	if [ -d /usr/lib/node_modules/open5gs ]; then rm -rf /usr/lib/node_modules/open5gs; fi && \
+#	mv /usr/src/open5gs-$OPEN5GS_VERSION/webui /usr/lib/node_modules/open5gs && \
+#	rm -rf /usr/src/open5gs-$OPEN5GS_VERSION
 
+FROM debian:bullseye
+
+RUN if [ ! -d /usr/lib/node_modules ]; then mkdir /usr/lib/node_modules; fi 
+
+COPY --from=sources /usr/src/open5gs-$OPEN5GS_VERSION/webui /usr/lib/node_modules/open5gs
+
+RUN apt-get update
 # This part installs testing tools and could be safely removed for "production" releases
 RUN apt-get -y install iproute2 tcpdump iputils-ping dnsutils vim procps net-tools
 
