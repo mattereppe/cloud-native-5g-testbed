@@ -38,6 +38,8 @@ RUN apt-get update; apt-get install -y wget curl git && \
 # This part installs testing tools and could be safely removed for "production" releases
 RUN apt-get -y install iproute2 tcpdump iputils-ping dnsutils vim procps net-tools
 
+ENV TZ="Europe/Rome"
+
 WORKDIR /usr/lib/node_modules/open5gs/
 
 CMD npm run start

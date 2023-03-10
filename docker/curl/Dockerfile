@@ -8,7 +8,7 @@ From curlimages/curl:latest
 # Change to root user to install bash
 USER root
 
-RUN apk update && apk upgrade && apk add bash coreutils
+RUN apk update && apk upgrade && apk add bash coreutils tzdata
 ENV TZ="Europe/Rome"
 
 # Switch back to the non-privileged user

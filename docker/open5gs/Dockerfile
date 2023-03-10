@@ -33,7 +33,7 @@ RUN cd /usr/src && \
 		cp -r install/var/* /var/ && \
 		cp -r install/etc/* /etc/
 
-RUN echo "Europe/Rome" > /etc/timezone
+ENV TZ="Europe/Rome"
 
 # This part installs testing tools and could be safely removed for "production" releases
 RUN apt-get -y install iproute2 tcpdump iputils-ping dnsutils vim procps net-tools

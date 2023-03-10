@@ -47,7 +47,7 @@ RUN apt-get update && apt-get -y upgrade && \
 	apt-get -y install libsctp1 && \
 	apt-get -y install iproute2 tcpdump procps iputils-ping dnsutils vim net-tools
 
-RUN echo "Europe/Rome" > /etc/timezone
+ENV TZ="Europe/Rome"
 
 WORKDIR /usr/local/bin/
 
