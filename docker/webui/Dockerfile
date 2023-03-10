@@ -51,7 +51,7 @@ RUN apt-get update; apt-get install -y wget curl git && \
 	  git clone https://github.com/open5gs/open5gs.git . ;	\
 	else \
 		wget -qO- /dev/null "https://github.com/open5gs/open5gs/archive/v${OPEN5GS_VERSION}.tar.gz" | tar zxf - ; \
-		mv open5gs-$OPEN5GS_VERSION open5gs;
+		mv open5gs-$OPEN5GS_VERSION open5gs; \
 	fi && \
 	cd /usr/src/open5gs/webui/ && \
 	npm ci --no-optional && npm run build 
