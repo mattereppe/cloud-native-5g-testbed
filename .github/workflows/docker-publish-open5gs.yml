@@ -10,6 +10,7 @@ on:
 #    - cron: '33 1 * * *'
   push:
     branches: [ "main" ]
+    paths: [ "docker/open5gs/**" ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' , 'v*.*' ]
   pull_request:

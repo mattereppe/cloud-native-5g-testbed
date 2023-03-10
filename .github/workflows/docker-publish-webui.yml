@@ -10,6 +10,7 @@ on:
 #    - cron: '39 16 * * *'
   push:
     branches: [ "main" ]
+    paths: [ "docker/webui/**" ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' , 'v*.*' ]
   pull_request:
