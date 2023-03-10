@@ -10,32 +10,32 @@ Source code:
 - https://github.com/open5gs/open5gs
 
 License:
-	- GNU Affero General Public License (AGPLv3)
+- GNU Affero General Public License (AGPLv3)
 
 ### Open source 5G UE and RAN (gNodeB)
 	
 Source code:
-	- https://github.com/aligungr/UERANSIM
+- https://github.com/aligungr/UERANSIM
 
 License:
-	- GNU GNU General Public License version 3 (GPLv3)
-   - commercial 
+- GNU GNU General Public License version 3 (GPLv3)
+- commercial 
 
 ### GoldenEye Layer 7 DoS Test Tool
 	
 Source code:
-	- https://github.com/jseidl/GoldenEye
+- https://github.com/jseidl/GoldenEye
 
 License:
-	- GNU General Public License version 3 (GPLv3)
+- GNU General Public License version 3 (GPLv3)
 
 ### The MongoDB Database
 
 Source code:
-	- https://github.com/mongodb/mongo
+- https://github.com/mongodb/mongo
 
 License:
-	- Server Side Public License v1 (SSPL)
+- Server Side Public License v1 (SSPL)
 
 
 ## Base images
@@ -43,21 +43,21 @@ License:
 # Debian 
 
 Image: 
-	- debian:bullseys
+- debian:bullseys
 	
 Repository:
-	- https://hub.docker.com/_/debian
+- https://hub.docker.com/_/debian
 
 License:
-	- https://www.debian.org/social_contract#guidelines
+- https://www.debian.org/social_contract#guidelines
 
 # Curl
 
 Image: 
-	- curlimages/curl
+- curlimages/curl
 
 Repository:
-	- https://hub.docker.com/r/curlimages/curl
+- https://hub.docker.com/r/curlimages/curl
 
 License:
-	- https://curl.se/docs/copyright.html
+- https://curl.se/docs/copyright.html
