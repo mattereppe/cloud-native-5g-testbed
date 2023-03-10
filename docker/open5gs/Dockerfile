@@ -35,7 +35,7 @@ RUN cd /usr/src && \
 	
 FROM debian:bullseye
 
-RUN if ! [ -d /usr/share/doc/open5gs ]; then mkdir -p /usr/share/doc/open5gs
+RUN if ! [ -d /usr/share/doc/open5gs ]; then mkdir -p /usr/share/doc/open5gs; fi
 
 COPY --from=sources /usr/src/open5gs/install/bin/* /usr/local/bin/
 COPY --from=sources /usr/src/open5gs/install/lib/* /lib/
