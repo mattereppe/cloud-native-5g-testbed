@@ -10,6 +10,7 @@ on:
 #    - cron: '24 5 * * *'
   push:
     branches: [ "main" ]
+	 paths: [ "docker/ueransim/**" ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' , 'v*.*' ]
   pull_request:
