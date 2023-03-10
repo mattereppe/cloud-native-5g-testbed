@@ -7,7 +7,7 @@ This page contains additional information about the software and base images use
 ### Open5GS
 
 Source code: 
-	- https://github.com/open5gs/open5gs
+- https://github.com/open5gs/open5gs
 
 License:
 	- GNU Affero General Public License (AGPLv3)
