@@ -46,6 +46,7 @@ COPY --from=sources /usr/src/open5gs/debian/copyright /usr/share/doc/open5gs/
 ENV TZ="Europe/Rome"
 
 # This part installs testing tools and could be safely removed for "production" releases
-RUN apt-get -y install iproute2 tcpdump iputils-ping dnsutils vim procps net-tools
+RUN apt-get update && \
+		apt-get -y install iproute2 tcpdump iputils-ping dnsutils vim procps net-tools
 
 WORKDIR /
