@@ -67,8 +67,6 @@ spec:
 #          - name: smf-fd-configmap-volume
 #            mountPath: /etc/freeDiameter/smf.conf
 #            subPath: smf.conf
-      imagePullSecrets: 						  # This to be removed once the image is public
-        - name: k8s-secret-open5gs
       volumes:
         - name: smf-configmap-volume
           configMap:

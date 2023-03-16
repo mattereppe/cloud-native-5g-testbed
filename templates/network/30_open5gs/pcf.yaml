@@ -54,8 +54,6 @@ spec:
           volumeMounts:
           - name: pcf-data-volume
             mountPath: /etc/open5gs/
-      imagePullSecrets: 						  # This to be removed once the image is public
-        - name: k8s-secret-open5gs
       volumes:
         - name: pcf-configmap-volume
           configMap:

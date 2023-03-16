@@ -66,8 +66,6 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 10
       restartPolicy: Always
-      imagePullSecrets: 						  # This to be removed once the image is public
-        - name: k8s-secret-open5gs
       volumes:
         - name: gnb-configmap-volume
           configMap:

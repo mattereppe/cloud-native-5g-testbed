@@ -93,6 +93,4 @@ spec:
           - name: mongodb-configmap-volume
             mountPath: /etc/mongod.conf
             subPath: mongod.conf
-      imagePullSecrets: 						  # This to be removed once the image is public
-        - name: k8s-secret-open5gs
 

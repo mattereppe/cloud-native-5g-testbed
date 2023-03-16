@@ -77,8 +77,6 @@ spec:
             mountPath: /etc/open5gs
           - name: dev-net-tun
             mountPath: /dev/net/tun
-      imagePullSecrets: 						  # This to be removed once the image is public
-        - name: k8s-secret-open5gs
       volumes:
         - name: upf-configmap-volume
           configMap:

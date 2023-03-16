@@ -70,8 +70,6 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 30
       restartPolicy: Always
-      imagePullSecrets: 						  # This to be removed once the image is public
-        - name: k8s-secret-open5gs
       volumes:
         - name: ue-configmap-volume
           configMap:

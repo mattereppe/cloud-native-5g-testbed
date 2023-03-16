@@ -42,6 +42,4 @@ spec:
           envFrom:
             - configMapRef:
                 name: open5gs-webui-config 
-      imagePullSecrets: 						  # This to be removed once the image is public
-        - name: k8s-secret-open5gs
 

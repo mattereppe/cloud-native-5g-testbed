@@ -39,8 +39,6 @@ spec:
       labels:
         role: webserver
     spec:
-      imagePullSecrets: 						  # This to be removed once the image is public
-        - name: k8s-secret-open5gs
       initContainers:
         - name: routeadd
           image: ghcr.io/mattereppe/open5gs:$CN5T_RELEASE
