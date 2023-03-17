@@ -35,7 +35,7 @@ spec:
                   fieldPath: metadata.name
       containers:
         - name: goldeneye
-          image: ghcr.io/mattereppe/goldeneye:$CN5T_RELEASE
+          image: ghcr.io/mattereppe/goldeneye:v0.2
           imagePullPolicy: Always
           env:
             - name: WORKERS
