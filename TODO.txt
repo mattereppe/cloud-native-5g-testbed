@@ -1,12 +1,13 @@
-Declarative configMap
-=====================
-ConfigMap can be created in an imperative (kubectl create) or declarative (kubectl apply -f .yaml). 
-Unfortunately, only the first form can read data from an existing file.
-Since for testing and debugging purpose editing files is more practical that changing them once they
-are embedded in the yaml, I manually create the ConfigMap when needed for now. 
-
-Later on, I would likely switch to the declarative approach with more stable versions of the files.
-
+# DONE!!!
+#Declarative configMap
+#=====================
+#ConfigMap can be created in an imperative (kubectl create) or declarative (kubectl apply -f .yaml). 
+#Unfortunately, only the first form can read data from an existing file.
+#Since for testing and debugging purpose editing files is more practical that changing them once they
+#are embedded in the yaml, I manually create the ConfigMap when needed for now. 
+#
+#Later on, I would likely switch to the declarative approach with more stable versions of the files.
+#
 
 Persistent storage
 ==================
@@ -17,14 +18,16 @@ The current configuration requires to export the fs with no_root_squash:
 /srv/mongodb	172.21.100.0/24(rw,sync,no_subtree_check,no_root_squash)
 
 
-Secrets
-=======
-Remove any secrets and make the repository public.
+# DONE!!!
+#Secrets
+#=======
+#Remove any secrets and make the repository public.
 
-Error management
-================
-Add liveness probes to (most of) all 5G components. Not sure this is really necessary, since errors 
-I saw are often due to unrecoverable crashes (e.g., mongodb).
+# DONE!!!
+#Error management
+#================
+#Add liveness probes to (most of) all 5G components. Not sure this is really necessary, since errors 
+#I saw are often due to unrecoverable crashes (e.g., mongodb).
 
 HTTP replicas
 =============

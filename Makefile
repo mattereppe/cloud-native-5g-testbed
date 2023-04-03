@@ -69,6 +69,3 @@ run: $(K8S_DEPLOY_FILE)
 
 delete: $(K8S_DEPLOY_FILE)
 	kubectl delete -f $<
-
-make addr:
-	@echo $$ENV_VARS
