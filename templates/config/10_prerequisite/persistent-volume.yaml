@@ -10,5 +10,5 @@ spec:
   accessModes: 
     - ReadWriteMany
   nfs:
-    path: /srv/mongodb
+    path: $NFS_SERVER_MONGODB
     server: $NFS_SERVER
