@@ -1,6 +1,39 @@
 # A cloud-native 5G testbed for investigating cyber-threats
 
+This projects provides a Kubernetes application for quick and easy setup of 5G testbeds. The current target is mostly represented by network attacks, but the general structure can be easily extended to cope with other use cases.
+
+
+# Quick start
+
+- Edit the main configuration and change the values according to your environment:
+```
+vim config/cn5t.env
+```
+- Build the configuration and deploy it:
+```
+make run
+```
+- Once done, you can remove the application with:
+```
+make delete
+```
+- If you want to clean the automatically-generatd manifest files:
+```
+make clean
+```
+
+# Overview of the application
+
 TODO
+
+
+# Full documentation
+
+Instructions to setup a Kubernetes cluster suitable for this application can be found [here](docs/kubernetes-setup.md).
+
+A more detailed overview of the setup process and configuration options available can be found [here](docs/install.md).
+
+Bugs, limitations, and troubleshooting are available [here](docs/bugs.md).
 
 
 # License
