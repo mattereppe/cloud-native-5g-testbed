@@ -107,8 +107,8 @@ iptables -A FORWARD -d <clusterCIDR> -j ACCEPT
 ```
 
 If you are deploying in OpenStack, check that anti-spoofing filters do not prevent communication between Kubernetes pod. In case, 
-	- either disable port security on all VMs:
-	- or add the subnet of pod address to the set of allowed networks:
+- either disable port security on all VMs;
+- or add the subnet of pod address to the set of allowed networks:
 	```
 	openstack port set  --allowed-address ip-address=<clusterCIDR> <port id>
 	```
@@ -117,9 +117,9 @@ If you are deploying in OpenStack, check that anti-spoofing filters do not preve
 
 ## Configure worker nodes
 
-Follows the same instructions to setup the Kubernetes packages on each worker node as [previously](Install-Kubernetes-packages) described.
+Follows the same instructions to setup the Kubernetes packages on each worker node as [previously](https://github.com/mattereppe/cloud-native-5g-testbed/blob/main/docs/kubernetes-setup.md#install-kubernetes-packages) described for the master.
 
-Run the command returned at the end of the [cluster installation](). If you didn't take note of the command, or the token is no more valid, you can generate it again by running the following command on the master node:
+Run the command returned at the end of the [cluster installation](https://github.com/mattereppe/cloud-native-5g-testbed/blob/main/docs/kubernetes-setup.md#create-the-cluster). If you didn't take note of the command, or the token is no more valid, you can generate it again by running the following command on the master node:
 ```
 kubeadm token create --print-join-command
 ```
