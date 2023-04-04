@@ -20,6 +20,7 @@ On Debian, the following steps can be followed to install these packages:
 curl -fsSLo /etc/apt/trusted.gpg.d/docker-archive.gpg https://download.docker.com/linux/debian/gpg
 echo "deb https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list
 apt-get install containerd.io docker-ce docker-ce-cli
+```
 
 for docker packages, and
 ```
