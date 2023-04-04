@@ -34,7 +34,7 @@ make clean
 The 5G Testbed application is a template to build different use cases based on 5G networking. The template includes a 5G Core (5GC), one Radio Access Network (RAN), one Internet server and many mobile users, as shown in the Picture below.
 
 <picture>
-  <img alt="Generic structure of the 5G Testbed application. " src="docs/images/cn5gt.eps">
+  <img alt="Generic structure of the 5G Testbed application. " src="docs/images/cn5gt.png">
 </picture>
 
 Mobile clients combine 5G User Equipment (UE) with client software for the Internet server. This also includes malicious software to perform attacks against the same server. By selecting different services and malware it is possible to build a number of use-cases. The current release provides a simple HTTP use-case with goldeneye attack.
