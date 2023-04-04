@@ -5,6 +5,13 @@ This projects provides a Kubernetes application for quick and easy setup of 5G t
 
 # Quick start
 
+This is a quick how for those who already know the application purpose and structure (see [below](https://github.com/mattereppe/cloud-native-5g-testbed#overview-of-the-application)).
+
+- Clone the repository and enter it.
+```
+git clone https://github.com/mattereppe/cloud-native-5g-testbed.git
+```
+
 - Edit the main configuration and change the values according to your environment:
 ```
 vim config/cn5t.env
@@ -24,7 +31,13 @@ make clean
 
 # Overview of the application
 
-TODO
+The 5G Testbed application is a template to build different use cases based on 5G networking. The template includes a 5G Core (5GC), one Radio Access Network (RAN), one Internet server and many mobile users, as shown in the Picture below.
+
+<picture>
+  <img alt="Generic structure of the 5G Testbed application. " src="docs/images/cn5gt.eps">
+</picture>
+
+Mobile clients combine 5G User Equipment (UE) with client software for the Internet server. This also includes malicious software to perform attacks against the same server. By selecting different services and malware it is possible to build a number of use-cases. The current release provides a simple HTTP use-case with goldeneye attack.
 
 
 # Full documentation
