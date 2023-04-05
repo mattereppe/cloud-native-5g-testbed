@@ -34,7 +34,7 @@ The cn5gt application emulates network attacks in (and against) 5G infrastructur
 - a botnet where malware (MW) generates attacks against the Internet service (or the 5G infrastructure).
   
 <picture>
-  <img alt="Generic structure of the cn5gt application. " src="images/cn5gt_v2.png">
+  <img alt="Description of the cn5gt application." src="images/cn5gt_v2.png">
 </picture>
 
 ## 5G network
