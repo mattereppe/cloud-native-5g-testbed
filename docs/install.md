@@ -104,7 +104,7 @@ The DDoS use-case have the following configuration parameters:
 - ```GOLDENEYE_URL```: The base URL of the victim server. For the current implementation, this is automatically derived from the victim's IP address.
 - ```GOLDENEYE_WORKERS```: Number of concurrent workers (see the ```goldeneye``` [documentation](https://github.com/jseidl/GoldenEye#usage)).
 - ```GOLDENEYE_SOCKETS```: Number of concurrent sockets (see the ```goldeneye``` [documentation](https://github.com/jseidl/GoldenEye#usage)).
-- ```GOLDENEYE_METHOD```: HTTP Method to use 'get' or 'post'  or 'random' (documentation)[https://github.com/jseidl/GoldenEye#usage]).
+- ```GOLDENEYE_METHOD```: HTTP Method to use 'get' or 'post'  or 'random' [documentation](https://github.com/jseidl/GoldenEye#usage)).
 
 The parameters ```CURL_REPLICA``` and ```DDOS_REPLICAS``` cannot exceed 100 if the included database of mobile users is used. Larger values require to build larger user databases.
 
