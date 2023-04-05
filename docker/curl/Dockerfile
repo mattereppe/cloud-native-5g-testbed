@@ -26,6 +26,7 @@
 # Check the container image for copyright and licenses that apply to the
 # included software (/usr/share/doc/*/copyright).
 #
+# v1.0.0
 
 From curlimages/curl:latest 
 

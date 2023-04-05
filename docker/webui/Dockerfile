@@ -26,6 +26,7 @@
 # Check the container image for copyright and licenses that apply to the
 # included software (/usr/share/doc/*/copyright).
 #
+# v1.0.0
 
 FROM debian:bullseye 
 
@@ -33,8 +34,6 @@ FROM debian:bullseye
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Software version. Can be "git" (for the latest version) or "x.y.z" for an archived version.
-#ARG OPEN5GS_VERSION="2.4.14"
-#ARG NODEJS_VERSION="17"
 ARG OPEN5GS_VERSION="2.6.1"
 ARG NODEJS_VERSION="19"
 
@@ -61,7 +60,7 @@ RUN apt-get update; apt-get install -y wget curl git && \
 	rm -rf /usr/src/open5gs
 
 # This part installs testing tools and could be safely removed for "production" releases
-RUN apt-get -y install iproute2 tcpdump iputils-ping dnsutils vim procps net-tools
+#RUN apt-get -y install iproute2 tcpdump iputils-ping dnsutils vim procps net-tools
 
 ENV TZ="Europe/Rome"
 

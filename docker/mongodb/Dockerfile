@@ -26,6 +26,7 @@
 # Check the container image for copyright and licenses that apply to the
 # included software (/usr/share/doc/*/copyright).
 #
+# v1.0.0
 
 FROM debian:bullseye
 
@@ -59,6 +60,6 @@ COPY mongo-init-200subs /tmp/mongo-init
 ENV TZ="Europe/Rome" 
 
 # This part installs testing tools and could be safely removed for "production" releases
-RUN apt-get -y install iproute2 tcpdump iputils-ping dnsutils vim procps net-tools
+#RUN apt-get -y install iproute2 tcpdump iputils-ping dnsutils vim procps net-tools
 
 WORKDIR /

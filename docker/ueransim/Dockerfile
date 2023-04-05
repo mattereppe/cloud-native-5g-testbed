@@ -26,6 +26,7 @@
 # Check the container image for copyright and licenses that apply to the
 # included software (/usr/share/doc/*/copyright).
 #
+# v1.0.0
 
 FROM debian:bullseye as sources
 
@@ -68,8 +69,8 @@ COPY --from=sources /usr/src/UERANSIM/build/libdevbnd.so /usr/local/lib/
 
 RUN mkdir /etc/ueransim
 RUN apt-get update && apt-get -y upgrade && \
-	apt-get -y install libsctp1 && \
-	apt-get -y install iproute2 tcpdump procps iputils-ping dnsutils vim net-tools
+	apt-get -y install libsctp1 #&& \
+#	apt-get -y install iproute2 tcpdump procps iputils-ping dnsutils vim net-tools
 
 ENV TZ="Europe/Rome"
 
