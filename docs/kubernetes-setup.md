@@ -138,3 +138,16 @@ By default, no workload is scheduled on the master node. If you want to broaden 
 kubectl taint nodes <master-node id> node-role.kubernetes.io/control-plane-
 ```
 
+# Configure the NFS server
+
+An NFS server must be configured and accessible to all cluster nodes. The simplest solution is to install it on the master node.
+```
+	apt-get install nfs-kernel-server 
+	mkdir /srv/mongodb
+```
+
+And export the above folder with no_root_squash option 
+```
+[/etc/exports]
+	/srv/mongodb   172.21.100.0/24(rw,sync,no_subtree_check,no_root_squash)
+```
