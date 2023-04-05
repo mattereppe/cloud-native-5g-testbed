@@ -102,8 +102,8 @@ The DDoS use-case have the following configuration parameters:
 - ```CURL_TIMEOUT```: The timeout for each ```curl``` query. It is usually due to connectivity problem (when the UE is not connected to the 5GC) or unresponsiveness of the server (e.g., during the attack).
 - ```DDOS_REPLICAS```: number of malicious users (attackers).
 - ```GOLDENEYE_URL```: The base URL of the victim server. For the current implementation, this is automatically derived from the victim's IP address.
-- ```GOLDENEYE_WORKERS```: Number of concurrent workers (see the ```goldeneye``` (documentation)[https://github.com/jseidl/GoldenEye#usage]).
-- ```GOLDENEYE_SOCKETS```: Number of concurrent sockets (see the ```goldeneye``` (documentation)[https://github.com/jseidl/GoldenEye#usage]).
+- ```GOLDENEYE_WORKERS```: Number of concurrent workers (see the ```goldeneye``` [documentation](https://github.com/jseidl/GoldenEye#usage)).
+- ```GOLDENEYE_SOCKETS```: Number of concurrent sockets (see the ```goldeneye``` [documentation](https://github.com/jseidl/GoldenEye#usage)).
 - ```GOLDENEYE_METHOD```: HTTP Method to use 'get' or 'post'  or 'random' (documentation)[https://github.com/jseidl/GoldenEye#usage]).
 
 The parameters ```CURL_REPLICA``` and ```DDOS_REPLICAS``` cannot exceed 100 if the included database of mobile users is used. Larger values require to build larger user databases.
@@ -186,5 +186,5 @@ In this case, a liveness probes is present in the templates for both the gNodeB 
 
 The goldeneye implementation is not conceived as cloud-native. It has long timeouts in case of broken connectivity, and it does not automatically restart in case of errors. In this case that patch adds a specific exit value to the application, which is used to detect connection failures. Additionally, a liveness probe is present that checks whether the tunnel to the UPF is present or not.
 
-The patch can be retrieved (here)[https://github.com/mattereppe/goldeneye]. 
+The patch can be retrieved [here](https://github.com/mattereppe/goldeneye). 
 
