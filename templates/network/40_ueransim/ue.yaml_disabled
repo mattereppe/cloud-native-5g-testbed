@@ -36,7 +36,7 @@ spec:
                   fieldPath: metadata.name
       containers:
         - name: ue
-          image: ghcr.io/mattereppe/ueransim:main
+          image: $IMAGE_REPO/ueransim:main
           securityContext:
             privileged: true
             capabilities:

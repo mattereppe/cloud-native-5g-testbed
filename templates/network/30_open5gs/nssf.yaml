@@ -48,7 +48,7 @@ spec:
                   fieldPath: status.podIP
       containers:
         - name: nssf
-          image: ghcr.io/mattereppe/open5gs:$CN5T_RELEASE
+          image: $IMAGE_REPO/open5gs:$CN5T_RELEASE
           imagePullPolicy: Always
           command: ["open5gs-nssfd", "-c", "/etc/open5gs/nssf.yaml"]
           volumeMounts:

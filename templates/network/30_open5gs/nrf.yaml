@@ -48,7 +48,7 @@ spec:
                   fieldPath: status.podIP
       containers:
         - name: nrf
-          image: ghcr.io/mattereppe/open5gs:$CN5T_RELEASE
+          image: $IMAGE_REPO/open5gs:$CN5T_RELEASE
           imagePullPolicy: Always
           volumeMounts:
             - name: nrf-data-volume

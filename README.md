@@ -1,6 +1,6 @@
-# A cloud-native 5G testbed for investigating cyber-threats
+# A Cloud-Native 5G Testbed (cn5gt) for investigating cyber-threats
 
-This projects provides a Kubernetes application for quick and easy setup of 5G testbeds. The current target is mostly represented by network attacks, but the general structure can be easily extended to cope with other use cases.
+This projects provides a Kubernetes application for quick and easy setup of cloud-native 5G testbeds. The current target is mostly represented by network attacks, but the general structure can be easily extended to cope with other use cases.
 
 
 # Quick start
@@ -31,10 +31,10 @@ make clean
 
 # Overview of the application
 
-The 5G Testbed application is a template to build different use cases based on 5G networking. The template includes a 5G Core (5GC), one Radio Access Network (RAN), one Internet server and many mobile users, as shown in the Picture below.
+The Cloud-Native 5G Testbed application is a template to build different use cases based on 5G networking. The template includes a 5G Core (5GC), one Radio Access Network (RAN), one Internet server and many mobile users, as shown in the Picture below.
 
 <picture>
-  <img alt="Generic structure of the 5G Testbed application. " src="docs/images/cn5gt.png">
+  <img alt="Generic structure of the cn5gt application. " src="docs/images/cn5gt.png">
 </picture>
 
 Mobile clients combine 5G User Equipment (UE) with client software for the Internet server. This also includes malicious software to perform attacks against the same server. By selecting different services and malware it is possible to build a number of use-cases. The current release provides a simple HTTP use-case with goldeneye attack.

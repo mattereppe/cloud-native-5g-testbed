@@ -41,7 +41,7 @@ spec:
     spec:
       initContainers:
         - name: routeadd
-          image: ghcr.io/mattereppe/open5gs:$CN5T_RELEASE
+          image: $IMAGE_REPO/open5gs:$CN5T_RELEASE
           imagePullPolicy: IfNotPresent
           securityContext:
             privileged: true

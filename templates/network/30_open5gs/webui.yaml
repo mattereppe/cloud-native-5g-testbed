@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
         - name: webui
-          image: ghcr.io/mattereppe/webui:$CN5T_RELEASE
+          image: $IMAGE_REPO/webui:$CN5T_RELEASE
           imagePullPolicy: Always
           command: ["npm","run","start"]
           envFrom:

@@ -48,7 +48,7 @@ spec:
                   fieldPath: status.podIP
       containers:
         - name: bsf
-          image: ghcr.io/mattereppe/open5gs:$CN5T_RELEASE
+          image: $IMAGE_REPO/open5gs:$CN5T_RELEASE
           imagePullPolicy: Always
           command: ["open5gs-bsfd", "-c", "/etc/open5gs/bsf.yaml"]
           volumeMounts:
