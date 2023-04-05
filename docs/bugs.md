@@ -6,7 +6,7 @@ Differently from the 5GC, UERANSIM was only conceived as emulation software to r
 - If the AMF changes its address (e.g., it is restarted), GNB does not connect anymore. The current workaround is a liveness probe that checks the list of registered AMFs and reboot the GNB if the list is empty.
 - The N3 interface between GNB and UPF is not resilient to changes in the UPF. Similarly to the previous point, if the UPF changes its address (e.g., when restarted), the GNB is not aware of the new address of UPF, and tries to connect to the previous address. The workaround affects the UE in this case, which is restarted in case the tunnel to the UPF does not work.
 
-## Deletering Kubernetes resources
+## Deleting Kubernetes resources
 
 When the cn5gt application is removed from the Kubernetes cluster, errors are likely to occur. The reason is the simple implementation of this operation, which apply the ```delete``` operation on the same merged manifest used for the deployment. This means resources are deleted in the same order as they were created, instead of reverse order as it would be correct. However, this behaviour has not side effect and the whole application namespace is fully deleted.
 
