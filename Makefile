@@ -24,7 +24,7 @@ $(foreach address,$(IPADDRS), $(eval NET$(address) := $($(address))/$(PREFIX)) )
 $(foreach address,$(IPADDRS), $(eval ENV_VARS += $$$$NET$(address) ) )
 
 # Dependencies
-TEMPLATE := $(wildcard $(TEMPLATE_DIR)/*/*/*.yaml) 
+TEMPLATE := $(wildcard $(TEMPLATE_DIR)/*/[0-9]*/*.yaml) 
 DEPLOY := $(subst $(TEMPLATE_DIR),$(DEPLOY_DIR),$(TEMPLATE))
 
 .PHONY: all clean help config 
@@ -69,3 +69,4 @@ run: $(K8S_DEPLOY_FILE)
 
 delete: $(K8S_DEPLOY_FILE)
 	kubectl delete -f $<
+
