@@ -56,5 +56,9 @@ All templates, scripts, source code and related files including the documentatio
 Running the testbed entails the usage of Docker images. As with all Docker images, these contain other software which may be under different licenses. The list of third parties' software is available in the [repo-info](repo-info/) directory of this project.
 As for any pre-built image usage, it is the image user's responsibility to ensure that any use of this image complies with any relevant licenses for all software contained within.
 
+# Acknowledgement
 
+You can freely use templates and software available from this repos. However, if you use it for your scientific papers, please reference the following paper:
+
+<i>M. Repetto. Service Templates to Emulate Network Attacks in Cloud-Native 5G Infrastructures. 5th International Workshop on Cyber-Security Threats, Trust and Privacy Management in Software-defined and Virtualized Infrastructures (SecSoft), June 23rd, 2023, Madrid, Spain.</i>
 
