@@ -47,7 +47,7 @@ Most of the pods of the application are connected to the main cluster network. H
 
 The RAN consists of a single gNobeB, to which all mobile UE connect. Both gNobeB and UE share the cluster network, which is not a problem since this is only an emulation of a real system. 
 
-A database with 200 users is provided. It can be loaded by setting the ```INIT_MONGODB=1``` (see (below)[]). Such users are generated with an incremental IMSI, from 0000000001 to 0000000100 and from 1000000001 to 1000000100. 
+A database with 200 users is provided. It can be loaded by setting the ```INIT_MONGODB=1``` (see (below)[https://github.com/mattereppe/cloud-native-5g-testbed/blob/main/docs/install.md#main-application]). Such users are generated with an incremental IMSI, from 0000000001 to 0000000100 and from 1000000001 to 1000000100. 
 They share all other parameters, including encryption/integrity keys and IMEI, since these are not relevant to the purpose of the application.
 IMSIs with the first digit set to "0" are used for licit users, whereas those starting with "1" are assigned to malicious users. The IMSI of each user can be easily inferred by its pod number, by summing "1" and "1000000001" for licit and malicious terminals, respectively. This approach facilitates the assignment of IMSIs when scaling the number of users, and does not have significant implications on the realisticity of the system.
 
