@@ -5,7 +5,7 @@ This projects provides a Kubernetes application for quick and easy setup of clou
 
 # Quick start
 
-This is a quick how for those who already know the application purpose and structure (see [below](https://github.com/mattereppe/cloud-native-5g-testbed#overview-of-the-application)).
+This is a quick how for those who already know the application purpose and structure (see [below](https://github.com/mattereppe/cloud-native-5g-testbed#overview-of-the-application)). Also disable anti-spoofing filters if the cluster is hosted in the cloud, as described for [OpenStack](https://github.com/mattereppe/cloud-native-5g-testbed/blob/main/docs/kubernetes-setup.md#openstack-configuration).
 
 - Clone the repository and enter it.
 ```

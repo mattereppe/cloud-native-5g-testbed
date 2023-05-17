@@ -7,6 +7,9 @@ This is a quick tutorial to install a minimal Kubernetes cluster on physical ser
 A working Linux installation is required to setup the cluster, on at least 2 servers/VMs.
 The following instructions assume a Debian-based distribution.
 
+If you deploy in a cloud infrastructure, anti-spoofing filters must be removed. A plain Kubernetes installation would only require to allow the pod network cidr (see [here](https://github.com/mattereppe/cloud-native-5g-testbed/blob/main/docs/kubernetes-setup.md#create-the-cluster)) for all VM interfaces.
+However, since cn5gt also uses an additional address range for the data network, the simplest solution is to disable anti-spoofing controls at all, as described in [OpenStack configuration](https://github.com/mattereppe/cloud-native-5g-testbed/blob/main/docs/kubernetes-setup.md#openstack-configuration). 
+
 ## Install Kubernetes packages
 
 Make sure to install the following packages and their dependencies (older versions might work as well, but have not been tested):
@@ -137,6 +140,34 @@ By default, no workload is scheduled on the master node. If you want to broaden 
 ```
 kubectl taint nodes <master-node id> node-role.kubernetes.io/control-plane-
 ```
+
+# OpenStack configuration
+
+OpenStack configuration is necessary to allow cluster-wide communication with pod network addresses that fall outside the OpenStack network.
+Plain cluster communication could be configured by running the following command for all ports of VMs hosting Kubernetes nodes:
+
+```
+openstack port set --allowed-address ip-address=<pod-network-cidr>/mac-address=<vm-interface-mac-address> <port_id>
+```
+
+Using the pod network address (e.g., 10.244.0.0/16) allows to apply a common configuration to all ports, independently of specific pod assignment to nodes.
+
+However, the current implementation of cn5gt uses an additional address space for the data network. This currently builds on the [macvlan](https://www.cni.dev/plugins/current/main/macvlan/) driver, which creates an interface inside the pod with direct access to the external network, but with its own mac address. Since such mac address is assigned automatically, it is not known in advance (and although it were, it would be cumbersome to configure the ip/mac pairs for all VMs).
+
+The current solution is therefore to disable port security for all VMs hosting cluster nodes. 
+
+```
+openstack  port set --disable-port-security <port_id>
+```
+
+If you have already configured mac/address pairs and security groups, delete them before running the previous command:
+```
+openstack  port set --no-security-group <port_id>
+openstack  port set --no-allowed-address <port_id>
+```
+
+<b>Do this at your risk, and mind that this is acceptable only in non-production environments.</b>
+Use only internal networks for cluster communication, and put your OpenStack installation behind an external firewall. If a firewall is not available, enable port security and configure security groups for the port/floating ip connecting to the external network. 
 
 # Configure the NFS server
 
