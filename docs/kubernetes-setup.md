@@ -140,6 +140,14 @@ By default, no workload is scheduled on the master node. If you want to broaden 
 kubectl taint nodes <master-node id> node-role.kubernetes.io/control-plane-
 ```
 
+## Add multus cni
+
+Multus is a cni for managing multiple networks and network interfaces on each pod. Installation instructions are given (here)[https://github.com/k8snetworkplumbingwg/multus-cni], but basically it is just enough to download the plugin and apply it:
+```
+git clone https://github.com/k8snetworkplumbingwg/multus-cni.git && cd multus-cni
+cat ./deployments/multus-daemonset.yml | kubectl apply -f -
+```
+
 # OpenStack configuration
 
 OpenStack configuration is necessary to allow cluster-wide communication with pod network addresses that fall outside the OpenStack network.
