@@ -19,7 +19,7 @@ metadata:
   name: static-pv-mongodb
   namespace: $K8S_NAMESPACE
 spec:
-  storageClassName: static-pv
+  storageClassName: ""
   accessModes:
     - ReadWriteMany
   resources:
