@@ -20,7 +20,7 @@ Make sure to install the following packages and their dependencies (older versio
 
 On Debian, the following steps can be followed to install these packages:
 ```
-curl -fsSLo /etc/apt/trusted.gpg.d/docker-archive.gpg https://download.docker.com/linux/debian/gpg
+curl -fsSL https://download.docker.com/linux/debian/gpg  | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/docker-archive.gpg
 echo "deb https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list
 apt-get install containerd.io docker-ce docker-ce-cli
 ```
@@ -29,7 +29,6 @@ for docker packages, and
 ```
 curl -fsSLo /etc/apt/trusted.gpg.d/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
 echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list
-deb https://apt.kubernetes.io/ kubernetes-xenial main
 apt-get install kubeadm kubectl kubelet 
 ```
 for Kubernetes.
@@ -139,6 +138,14 @@ kubectl label node kube1 node-role.kubernetes.io/worker=worker
 By default, no workload is scheduled on the master node. If you want to broaden the set of workers (or in case you have only a single VM/server avaialble), you can taint that master:
 ```
 kubectl taint nodes <master-node id> node-role.kubernetes.io/control-plane-
+```
+
+## Add multus cni
+
+Multus is a cni for managing multiple networks and network interfaces on each pod. Installation instructions are given (here)[https://github.com/k8snetworkplumbingwg/multus-cni], but basically it is just enough to download the plugin and apply it:
+```
+git clone https://github.com/k8snetworkplumbingwg/multus-cni.git && cd multus-cni
+cat ./deployments/multus-daemonset.yml | kubectl apply -f -
 ```
 
 # OpenStack configuration
