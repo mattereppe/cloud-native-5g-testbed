@@ -26,7 +26,7 @@
 # Check the container image for copyright and licenses that apply to the
 # included software (/usr/share/doc/*/copyright).
 #
-# v1.0.0
+# v1.0.2
 
 FROM debian:bullseye
 
@@ -39,7 +39,9 @@ ARG KEY_REP=/usr/share/keyrings/
 # Software version (please note that only a limited number of combinations may be possible
 #ARG OPEN5GS_VERSION="v2.2.8" # "latest" or a valid repository tag
 #ARG MONGODB_VERSION=5.0
-ARG MONGODB_VERSION=6.0
+#ARG MONGODB_VERSION=6.0
+# Use version < 5.0 when avx extensions are not available in CPU
+ARG MONGODB_VERSION=4.4
 
 # Update and install preliminary dependencies
 RUN apt-get update; apt-get install -y wget gpg && \
