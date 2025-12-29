@@ -8,6 +8,8 @@ TEMPLATE_DIR := templates
 K8S_DEPLOY_FILE := $(DEPLOY_DIR)/cn5t.yaml
 ENV_FILE := cn5t.env
 
+NONAMESPACE_EXCLUDE := %/namespace.yaml %/persistent-volume.yaml
+
 # Load the configuration file as environment variables
 include  $(CONFIG_DIR)/$(ENV_FILE)
 export
@@ -29,7 +31,12 @@ DEPLOY := $(subst $(TEMPLATE_DIR),$(DEPLOY_DIR),$(TEMPLATE))
 
 .PHONY: all clean help config 
 
+# The DEPLOY_LIST variable is used to selectively include components in the deployment file
+all: DEPLOY_LIST = $(DEPLOY)
 all: $(K8S_DEPLOY_FILE) config
+
+nonamespace: DEPLOY_LIST = $(filter-out $(NONAMESPACE_EXCLUDE), $(DEPLOY))
+nonamespace: $(K8S_DEPLOY_FILE) config
 
 help:
 	@echo "Cloud-native 5G deployment"
@@ -54,7 +61,8 @@ $(DEPLOY_DIR)/%.yaml: $(TEMPLATE_DIR)/%.yaml $(CONFIG_DIR)/$(ENV_FILE)
 
 $(K8S_DEPLOY_FILE): $(DEPLOY) 
 	@echo "---" > $(K8S_DEPLOY_FILE)
-	@for file in $(DEPLOY_DIR)/*/*/*; do \
+	@echo $(DEPLOY_LIST)
+	@for file in $(DEPLOY_LIST); do \
 		echo "Merging: " $$file; \
 		cat $$file >> $(K8S_DEPLOY_FILE); \
 		echo "---" >> $(K8S_DEPLOY_FILE); \

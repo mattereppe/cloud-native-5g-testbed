@@ -4,7 +4,7 @@ metadata:
   name: static-pv-mongodb
   namespace: $K8S_NAMESPACE
 spec:
-  storageClassName: ""
+  storageClassName: $STORAGE_CLASS
   capacity:
     storage: 100Mi
   accessModes: 

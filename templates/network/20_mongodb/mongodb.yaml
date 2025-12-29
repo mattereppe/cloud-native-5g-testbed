@@ -19,7 +19,7 @@ metadata:
   name: static-pv-mongodb
   namespace: $K8S_NAMESPACE
 spec:
-  storageClassName: ""
+  storageClassName: $STORAGE_CLASS
   accessModes:
     - ReadWriteMany
   resources:
@@ -77,7 +77,7 @@ spec:
               fi;
       containers:
         - name: mongodb
-          image: ghcr.io/mattereppe/mongodb:$CN5T_RELEASE
+          image: $IMAGE_REPO/mongodb:$CN5T_RELEASE
           imagePullPolicy: Always
           command: 
             - mongod
