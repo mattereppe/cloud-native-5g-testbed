@@ -77,7 +77,6 @@ jobs:
         with:
           context: ./docker/ueransim/
           push: ${{ github.event_name != 'pull_request' }}
-#          tags: ${{ steps.meta.outputs.tags }}
           tags:
             - mattereppe/ueransim:v1.0.2
             - mattereppe/ueransim:latest
