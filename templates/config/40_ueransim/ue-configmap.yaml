@@ -8,8 +8,8 @@ metadata:
 data:
   ue.yaml: |
     supi: 'imsi-00101$UEID'
-    mcc: '001'
-    mnc: '01'
+    mcc: $OPEN5GS_MCC
+    mnc: $OPEN5GS_MNC
     
     key: '465B5CE8B199B49FAA5F0A2EE238A6BC'
     op: 'E8ED289DEBA952E4283B54E88E6183CA'
@@ -28,14 +28,14 @@ data:
       - type: 'IPv4'
         apn: 'internet'
         slice:
-          sst: 1
+          sst: $OPEN5GS_SST
         emergency: false
  
     configured-nssai:
-      - sst: 1
+      - sst: $OPEN5GS_SST
 
     default-nssai:
-      - sst: 1
+      - sst: $OPEN5GS_SST
     
     uacAic:
       mps: false

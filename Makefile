@@ -29,7 +29,7 @@ $(foreach address,$(IPADDRS), $(eval ENV_VARS += $$$$NET$(address) ) )
 TEMPLATE := $(wildcard $(TEMPLATE_DIR)/*/[0-9]*/*.yaml) 
 DEPLOY := $(subst $(TEMPLATE_DIR),$(DEPLOY_DIR),$(TEMPLATE))
 
-.PHONY: all clean help config 
+.PHONY: all clean help config nonamespace
 
 # The DEPLOY_LIST variable is used to selectively include components in the deployment file
 all: DEPLOY_LIST = $(DEPLOY)
@@ -37,6 +37,13 @@ all: $(K8S_DEPLOY_FILE) config
 
 nonamespace: DEPLOY_LIST = $(filter-out $(NONAMESPACE_EXCLUDE), $(DEPLOY))
 nonamespace: $(K8S_DEPLOY_FILE) config
+# Remove all "namespace: " specifiers in the yaml files
+	@for file in $(DEPLOY_LIST); do \
+		sed -ie "/^  namespace:/d" $$file; \
+		rm $$file\e; \
+	done
+	@sed -ie "/^  namespace:/d" $(K8S_DEPLOY_FILE)
+	@rm $(K8S_DEPLOY_FILE)e
 
 help:
 	@echo "Cloud-native 5G deployment"
@@ -61,7 +68,6 @@ $(DEPLOY_DIR)/%.yaml: $(TEMPLATE_DIR)/%.yaml $(CONFIG_DIR)/$(ENV_FILE)
 
 $(K8S_DEPLOY_FILE): $(DEPLOY) 
 	@echo "---" > $(K8S_DEPLOY_FILE)
-	@echo $(DEPLOY_LIST)
 	@for file in $(DEPLOY_LIST); do \
 		echo "Merging: " $$file; \
 		cat $$file >> $(K8S_DEPLOY_FILE); \

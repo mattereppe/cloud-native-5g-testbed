@@ -7,12 +7,12 @@ metadata:
     ran-role: gnb
 data:
   gnb.yaml: |
-    mcc: 001
-    mnc: 01
+    mcc: $OPEN5GS_MCC
+    mnc: $OPEN5GS_MNC
     
     nci: 0x000000010
     idLength: 32
-    tac: 1
+    tac: $OPEN5GS_TAC
     
     linkIp: $GNB_POD_IP
     ngapIp: $GNB_POD_IP
@@ -23,6 +23,6 @@ data:
         port: 38412
     
     slices:
-      - sst: 1
+      - sst: $OPEN5GS_SST
     
     ignoreStreamIds: true

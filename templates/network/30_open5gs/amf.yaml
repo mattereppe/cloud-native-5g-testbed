@@ -10,7 +10,7 @@ spec:
   - name: sbi      # Service Based Interface (web interface "bus" in the control plane)
     port: 7777
     protocol: TCP    
-  - name: ngap		 # Next-Generation Application Protocol (between gNodeB - AMF)
+  - name: ngap     # Next-Generation Application Protocol (between gNodeB - AMF)
     port: 38412
     protocol: SCTP
 #   nodePort: 36412
