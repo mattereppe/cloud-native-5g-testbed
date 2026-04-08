@@ -68,7 +68,7 @@ spec:
             - name: connector-data-volume
               mountPath: /config
           env:
-            - name: UPF_POD_IP
+            - name: CONNECTOR_POD_IP
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP

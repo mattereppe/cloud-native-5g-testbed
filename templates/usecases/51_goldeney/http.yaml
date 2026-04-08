@@ -50,8 +50,47 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - ip route add 10.45.0.0/16 via $ADDR_UEGW;
+        - name: replace-env-variables-connector
+          image: bhgedigital/envsubst
+          command: ["/bin/sh","-c","cat /tmp/connector.yaml | envsubst > /config/connector.yaml"]
+          volumeMounts:
+            - name: connector-configmap-volume
+              mountPath: /tmp/
+            - name: connector-data-volume
+              mountPath: /config
+          env:
+            - name: CONNECTOR_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
       containers:
         - name: http
           image: kennethreitz/httpbin
           imagePullPolicy: IfNotPresent
+          command: ['/usr/bin/python3', '/usr/local/bin/gunicorn']
+          args:
+            - -b 0.0.0.0:80
+            - httpbin:app
+            - -k gevent
+            - --capture-output
+            - --access-logfile=/var/log/http_access.log
+            - --error-logfile=/var/log/http_error.log
+        - name: miranda-connector
+          image: $IMAGE_REPO/connector:$CONNECTOR_RELEASE
+          securityContext:
+            privileged: true
+            capabilities:
+              add: ["NET_ADMIN"]
+          imagePullPolicy: Always
+          command: ["python3", "connector.py", "-c", "/config/connector.yaml"]
+          volumeMounts:
+          - name: connector-data-volume
+            mountPath: /config
+      volumes:
+        - name: connector-configmap-volume
+          configMap:
+            name: connector-config
+        - name: connector-data-volume
+          emptyDir: {}
+
 
