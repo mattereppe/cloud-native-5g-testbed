@@ -15,6 +15,9 @@ spec:
     protocol: TCP    
     targetPort: 80
     nodePort: 30088
+  - name: openc2  # OpenC2 MIRANDA connector
+    port: 8080
+    protocol: TCP
 ---
 apiVersion: apps/v1 
 kind: StatefulSet
@@ -56,7 +59,7 @@ spec:
           volumeMounts:
             - name: connector-configmap-volume
               mountPath: /tmp/
-            - name: connector-data-volume
+            - name: connector-config-volume
               mountPath: /config
           env:
             - name: CONNECTOR_POD_IP
@@ -85,12 +88,21 @@ spec:
           command: ["python3", "connector.py", "-c", "/config/connector.yaml"]
           volumeMounts:
           - name: connector-data-volume
+            mountPath: /data
+          - name: connector-config-volume
             mountPath: /config
+          - name: fclm-filebeat-volume
+            mountPath: /actuators-config/fclm-filebeat.yaml
+            subPath: fclm-filebeat.yaml
       volumes:
         - name: connector-configmap-volume
           configMap:
             name: connector-config
+        - name: connector-config-volume
+          emptyDir: {}
         - name: connector-data-volume
           emptyDir: {}
-
+        - name: fclm-filebeat-volume
+          configMap:
+            name: fclm-config-filebeat
 
