@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nfm-config-fprobe
+  namespace: $K8S_NAMESPACE
+data:
+  nfm-fprobe.yaml: |
+    nfm-fprobe:
+      actuator: "nfm-fprobe"
+      profile: "x-nfm"
+      owner: "cnr.it"
+      specifiers:
+        domain: null
+        asset_id: "nfm-fprobe"
+      probe:
+        executable: "/sbin/fprobe"

@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fclm-config-filebeat
+  namespace: $K8S_NAMESPACE
+data:
+  fclm-filebeat.yaml: |
+    fclm-filebeat:
+      actuator: "fclm-filebeat"
+      profile: "x-fclm"
+      owner: "cnr.it"
+      specifiers:
+        domain: null
+        asset_id: "fclm-filebeat"
+      probe:
+        executable: "/usr/share/filebeat/bin/filebeat" # WARNING: /usr/bin/filebeat is a wrapper!!! DO NOT USE
+        info_elements: null
+        base_config: null
+        path_home: "/data/beats"
+        path_data: "data"
+        path_logs: "log"
+        path_config: "config"
+        capabilities:
+          agent: "filebeat"
+          imports_config:
+            - "file"
+            - "uri"
+            - "socket"
+          exports_config:
+            - "file"
+          import_controls:
+            - "scan_frequency"
+            - "backoff"
+            - "max_backoff"
+            - "close_inactive"
+            - "ignore_older"
+

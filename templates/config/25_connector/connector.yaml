@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: connector-config
+  namespace: $K8S_NAMESPACE
+data:
+  connector.yaml: |
+    id: connector@mirandaproject.eu 
+    consumer:
+       host: $CONNECTOR_POD_IP
+       port: $CONNECTOR_PORT
+       endpoint: "/.well-known/openc2"
+       encoding: "json"
+       transfer: "http"
+       transfer_options:
+          http_server: "gunicorn"
+    configs: "/actuators-config"
+    
+    logger:
+       version: 1
+       disable_existing_loggers: false
+       propagate: true
+       formatters:
+          otupy:
+             (): otupy.LogFormatter
+             datetime: True
+             name: True
+       handlers:
+          console:
+             class: logging.StreamHandler
+             formatter: otupy
+             level: INFO
+             filters: Null
+       root:
+          handlers: [console]
+          level: INFO

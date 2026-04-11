@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nfm-config-packetbeat
+  namespace: $K8S_NAMESPACE
+data:
+  nfm-packetbeat.yaml: |
+    nfm-packetbeat:
+      actuator: "nfm-packetbeat"
+      profile: "x-nfm"
+      owner: "cnr.it"
+      specifiers:
+        domain: null
+        asset_id: "nfm-packetbeat"
+      probe:
+        executable: "/usr/share/packetbeat/bin/packetbeat"
+        info_elements: null
+        path_home: "/data/beats"
+        path_data: "data"
+        path_log: "log"
+        path_config: "config"
