@@ -78,6 +78,9 @@ spec:
             - --capture-output
             - --access-logfile=/var/log/http_access.log
             - --error-logfile=/var/log/http_error.log
+          volumeMounts:
+          - name: shared-log-volume
+            mountPath: /var/log
         - name: miranda-connector
           image: $IMAGE_REPO/connector:$CONNECTOR_RELEASE
           securityContext:
@@ -89,6 +92,8 @@ spec:
           volumeMounts:
           - name: connector-data-volume
             mountPath: /data
+          - name: shared-log-volume
+            mountPath: /var/log
           - name: connector-config-volume
             mountPath: /config
           - name: fclm-filebeat-volume
@@ -105,4 +110,6 @@ spec:
         - name: fclm-filebeat-volume
           configMap:
             name: fclm-config-filebeat
+        - name: shared-log-volume
+          emptyDir: {}
 
