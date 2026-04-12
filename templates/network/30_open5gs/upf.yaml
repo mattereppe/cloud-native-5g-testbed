@@ -10,7 +10,7 @@ spec:
   - name: pfcp      # Packet Forwarding Control Protocol (SDN-like packet forwarding rules)
     port: 8805
     protocol: UDP    
-  - name: gtpu		# GPRS Tunnelling Protocol - User data tunneling
+  - name: gtpu     # GPRS Tunnelling Protocol - User data tunneling
     port: 2152
     protocol: UDP
   - name: openc2  # OpenC2 MIRANDA connector
@@ -88,7 +88,7 @@ spec:
               ip tuntap add name ogstun mode tun;
               ip addr add 10.45.0.1/16 dev ogstun;
               ip link set ogstun up; 
-              open5gs-upfd -c /etc/open5gs/upf.yaml				  
+              open5gs-upfd -c /etc/open5gs/upf.yaml
           volumeMounts:
           - name: upf-data-volume
             mountPath: /etc/open5gs
