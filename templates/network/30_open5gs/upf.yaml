@@ -6,6 +6,7 @@ metadata:
   labels:
     epc-role: upf
 spec:
+  type: NodePort
   ports:
   - name: pfcp      # Packet Forwarding Control Protocol (SDN-like packet forwarding rules)
     port: 8805
@@ -16,6 +17,7 @@ spec:
   - name: openc2  # OpenC2 MIRANDA connector
     port: 8080
     protocol: TCP
+    nodePort: 30180
   selector:
     epc-role: upf    
 ---
