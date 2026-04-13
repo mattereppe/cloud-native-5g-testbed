@@ -11,7 +11,7 @@ spec:
   - name: pfcp      # Packet Forwarding Control Protocol (SDN-like packet forwarding rules)
     port: 8805
     protocol: UDP    
-  - name: gtpu		# GPRS Tunnelling Protocol - User data tunneling
+  - name: gtpu   # GPRS Tunnelling Protocol - User data tunneling
     port: 2152
     protocol: UDP
   - name: openc2  # OpenC2 MIRANDA connector
