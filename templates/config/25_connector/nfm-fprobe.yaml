@@ -14,3 +14,6 @@ data:
         asset_id: "nfm-fprobe"
       probe:
         executable: "/sbin/fprobe"
+        allowed_interfaces:
+        - ogstun
+        - net1
