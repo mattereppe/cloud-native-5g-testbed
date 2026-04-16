@@ -19,3 +19,6 @@ data:
         path_data: "data"
         path_log: "log"
         path_config: "config"
+        allowed_interfaces:
+        - ogstun
+        - net1
