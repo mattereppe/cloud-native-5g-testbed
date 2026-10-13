@@ -29,6 +29,11 @@
 # v1.0.0 
 
 FROM debian:bullseye as sources
+# Workaround for bullseye end-of-live. For now we keep the old software
+# to have more vulnerabilities for threat analysis.
+sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
+    sed -i 's/security.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
+    sed -i '/bullseye-updates/d' /etc/apt/sources.list
 
 # Disable interactive mode for apt
 ARG DEBIAN_FRONTEND=noninteractive
